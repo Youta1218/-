@@ -9,6 +9,6 @@ class BookController extends Controller
 {
     public function Bookps(Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
 {
-    return $book->get();//$bookの中身を戻り値にする。
+    return view('books.bookps')->with(['books' => $book->getPaginateByLimit()]);//$bookの中身を戻り値にする。
 }//
 }
