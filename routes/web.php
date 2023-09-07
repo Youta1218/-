@@ -15,11 +15,12 @@ use App\Http\Controllers\BookController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
+//Route::get('/blogs', [BlogController::class, 'blogps']);
+Route::get('/', [BlogController::class, 'blogps']);
+Route::get('/', [BookController::class, 'Bookps']);
+    
+/**Route::get('/', function () {
     return view('welcome');
-    Route::get('/blogs', [BlogController::class, 'Blogps']);
-    Route::get('/books', [BookController::class, 'Bookps']);  
 });
 
 Route::get('/dashboard', function () {
@@ -32,4 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';**/
