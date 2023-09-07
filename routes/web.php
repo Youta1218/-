@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+    Route::get('/blogs', [BlogController::class, 'Blogps']);
+    Route::get('/books', [BookController::class, 'Bookps']);  
 });
 
 Route::get('/dashboard', function () {
