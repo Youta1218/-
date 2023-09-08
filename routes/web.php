@@ -17,7 +17,9 @@ use App\Http\Controllers\BookController;
 */
 //Route::get('/blogs', [BlogController::class, 'blogps']);
 Route::get('/', [BlogController::class, 'blogps']);
+Route::get('/blogs/{blog}', [BlogController::class ,'blogshow']);
 Route::get('/', [BookController::class, 'Bookps']);
+Route::get('/books/{book}', [BookController::class ,'bookshow']);
     
 /**Route::get('/', function () {
     return view('welcome');
