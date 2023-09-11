@@ -7,6 +7,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
+
         <a href='/blogs/blogct'>blog_create</a>
          <div class='posts'>
             @foreach ($blogs as $blog)
@@ -18,6 +19,7 @@
                     <p class='blog_body'>{{ $blog->blog_body }}</p>
                     <p class='category'>{{ $blog->category_id }}</p>
                     <p class='series'>{{ $blog->series_id }}</p>
+
                 </div>
             @endforeach
         </div>

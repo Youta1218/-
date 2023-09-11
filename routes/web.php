@@ -17,6 +17,7 @@ use App\Http\Controllers\BookController;
 */
 //Route::get('/blogs', [BlogController::class, 'blogps']);
 Route::get('/', [BlogController::class, 'blogps']);
+
 Route::get('/blogs/blogct', [BlogController::class, 'blogct']);
 Route::get('/blogs/{blog}', [BlogController::class ,'blogshow']);
 Route::get('/blogs/{blog}/blogedit', [BlogController::class, 'blogedit']);
@@ -29,6 +30,7 @@ Route::get('/books/{book}', [BookController::class ,'bookshow']);
 Route::get('/books/{book}/bookedit', [BookController::class, 'bookedit']);
 Route::put('/books/{book}', [BookController::class, 'bookupdate']);
 Route::delete('/books/{book}', [BookController::class,'bookdelete']);    
+
 /**Route::get('/', function () {
     return view('welcome');
 });

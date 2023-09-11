@@ -7,6 +7,7 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
+
     public function bookps(Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
     {
         return view('books.bookps')->with(['books' => $book->getPaginateByLimit()]);//$bookの中身を戻り値にする。
@@ -37,4 +38,5 @@ class BookController extends Controller
         return redirect('/books/' . $book->id);
     }
     
+
 }
