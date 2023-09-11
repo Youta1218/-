@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request\BookpsRequest;
+use Illuminate\Http\Request; //\BookpsRequest;
 use App\Models\Book;
 
 class BookController extends Controller
@@ -24,6 +24,17 @@ class BookController extends Controller
         $input = $request['book'];
         $post->fill($input)->save();
         return redirect('/blogs/' . $book->id);
+    }
+    public function bookedit(book $book)
+    {
+        return view('books.bookedit')->with(['book' => $book]);
+    }
+    public function bookupdate(BookpsRequest $request, Book $book)
+    {
+        $input_book = $request['book'];
+        $book->fill($input_book)->save();
+
+        return redirect('/books/' . $book->id);
     }
     
 }

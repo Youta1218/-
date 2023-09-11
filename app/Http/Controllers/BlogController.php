@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request\BlogpsRequest;
+use Illuminate\Http\Request; //\BlogpsRequest;
 use App\Models\Blog;
 
 class BlogController extends Controller
@@ -24,6 +24,17 @@ class BlogController extends Controller
     {
         $input = $request['blog'];
         $blog->fill($input)->save();
+        return redirect('/blogs/' . $blog->id);
+    }
+    public function blogedit(Blog $blog)
+    {
+        return view('blogs.blogedit')->with(['blog' => $blog]);
+    }
+    public function blogupdate(BlogpsRequest $request, Blog $blog)
+    {
+        $input_blog = $request['blog'];
+        $post->fill($input_blog)->save();
+
         return redirect('/blogs/' . $blog->id);
     }
 }

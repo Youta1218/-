@@ -7,14 +7,13 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <h2 class='title'>{{ $blog->book_title }}</h2>
-        <a href='/blogs/bookct'>book_create</a>
+        <a href='/books/bookct'>book_create</a>
          <div class='posts'>
             @foreach ($books as $book)
                 <div class='post'>
-                    <h2 class='title'>{{ $book->title }}</h2>
+                    <p class='body2'>{{ $book->front_cover_image_path }}</p>
+                    <h2 class='title'>{{ $book->title }}</h1>
                     <p class='body'>{{ $book->author }}</p>
-                    <p class='body'>{{ $book->front_cover_image_path }}</p>
                 </div>
             @endforeach
         </div>

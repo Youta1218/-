@@ -27,5 +27,5 @@ class BlogpsRequest extends FormRequest
             'blog.blog_title' => 'required|string|max:100',
             'blog.blog_body' => 'required|string|max:4000',
         ];
-    }
+    } 
 }

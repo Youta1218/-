@@ -12,16 +12,18 @@
         </h1>
          <div class='content'>
                 <div class='blog_content'>
+                    <p class='blog_title'>{{ $blog->blog_title }}</p>
                     <h3>題名</h3>
-                    <h2 class='title'>{{ $blog->book_title }}</h2>
+                    <h2 class='book_title'>{{ $blog->book_title }}</h2>
                     <h3>著者</h3>
-                    <p class='body'>{{ $blog->author }}</p>
+                    <p class='author'>{{ $blog->author }}</p>
                     <h3>表紙</h3>
-                    <p class='body'>{{ $blog->front_cover_image_path }}</p>
+                    <p class='cover'>{{ $blog->front_cover_image_path }}</p>
                     <h3>コメント</h3>
-                    <p class='body'>{{ $blog->blog_body }}</p>
+                    <p class='blog_body'>{{ $blog->blog_body }}</p>
                 </div>
         </div>
+        <div class="edit"><a href="/blogs/{{ $blog->id }}/edit">投稿情報編集</a></div>
        <div class="footer">
             <a href="/">戻る</a>
         </div>
