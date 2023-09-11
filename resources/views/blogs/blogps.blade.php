@@ -7,15 +7,19 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <h1>本投稿ページ</h1>
+
+        <a href='/blogs/blogct'>blog_create</a>
          <div class='posts'>
             @foreach ($blogs as $blog)
                 <div class='post'>
-                    <h2 class='title1'>{{ $blog->book_title }}</h2>
-                    <p class='body1'>{{ $blog->author }}</p>
-                    <p class='body2'>{{ $blog->front_cover_image_path }}</p>
-                    <h2 class='title2'>{{ $blog->blog_title }}</h2>
-                    <p class='body3'>{{ $blog->blog_body }}</p>
+                    <h2 class='title'>{{ $blog->blog_title }}</h2>
+                    <h2 class='blog_title'>{{ $blog->book_title }}</h2>
+                    <p class='author'>{{ $blog->author }}</p>
+                    <p class='cover'>{{ $blog->front_cover_image_path }}</p>
+                    <p class='blog_body'>{{ $blog->blog_body }}</p>
+                    <p class='category'>{{ $blog->category_id }}</p>
+                    <p class='series'>{{ $blog->series_id }}</p>
+
                 </div>
             @endforeach
         </div>
