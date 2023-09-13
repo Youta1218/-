@@ -32,6 +32,7 @@ Route::get('/books/{book}', [BookController::class ,'bookshow']);
 Route::get('/books/{book}/bookedit', [BookController::class, 'bookedit']);
 Route::put('/books/{book}', [BookController::class, 'bookupdate']);
 Route::delete('/books/{book}', [BookController::class,'bookdelete']);    
+
 /**Route::get('/', function () {
     return view('welcome');
 });

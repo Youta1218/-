@@ -9,6 +9,7 @@ class Book extends Model
 {
     use HasFactory;
     public function getPaginateByLimit(int $limit_count = 10)
+
     {
     // updated_atで降順に並べたあと、limitで件数制限をかける
         return $this->orderBy('updated_at', 'DESC')->paginate($limit_count);
@@ -23,6 +24,7 @@ class Book extends Model
     'series_id'
     ];
     
+<<<<<<< HEAD
      public function user()   
     {
         return $this->belongsTo(User::class);  
@@ -39,4 +41,7 @@ class Book extends Model
     {
         return $this->belongsTo(Series::class);
     }
+=======
+
+>>>>>>> c82e362871f605a9806cb95a1dffa8c2905af0e2
 }

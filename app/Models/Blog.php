@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     use HasFactory;
+
     public function getPaginateByLimit(int $limit_count = 10)
     {
     // updated_atで降順に並べたあと、limitで件数制限をかける
@@ -24,6 +25,7 @@ class Blog extends Model
     'blog_body'
     ];
     
+<<<<<<< HEAD
     public function user()   
     {
         return $this->belogsTo(User::class);  
@@ -37,3 +39,7 @@ class Blog extends Model
         return $this->belongsTo(Series::class);
     }
 }
+=======
+
+}
+>>>>>>> c82e362871f605a9806cb95a1dffa8c2905af0e2
