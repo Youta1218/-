@@ -18,11 +18,11 @@
                 <h3>表紙</h3>
                 <input type='text' name='book[front_cover_image_path]' value="{{ $book->front_cover_image_path }}">
                 <h4>本の場所</h4> 
-                <input type='text' name='bookshelfks[place]' value="{{ $bookshelf->place }}">
+                <input type='text' name='bookshelf[place]' value="{{ $book->bookshelf->place }}">
                 <h4>カテゴリー</h4> 
-                <input type='text' name='category[name]' value="{{ $category->name }}">
+                <input type='text' name='category[name]' value="{{ $book->category->name }}">
                 <h4>シリーズ</h4> 
-                <input type='text' name='series[name]' value="{{ $series->name }}">
+                <input type='text' name='series[name]' value="{{ $book->series->name }}">
                 
                 
                 

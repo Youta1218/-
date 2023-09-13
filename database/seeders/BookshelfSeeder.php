@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use DateTime
+use DateTime;
 
 class BookshelfSeeder extends Seeder
 {
@@ -16,7 +16,9 @@ class BookshelfSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('bookshelves')->insert([
         'place' => '場所',
         'bookshelf_image_path' => 'pic',
+        ]);
     }
 }

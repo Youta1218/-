@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use DateTime
+use DateTime;
 
 class BookSeeder extends Seeder
 {
@@ -16,6 +16,7 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('books')->insert([
         'user_id' => 1,
         'title' => '命名の心得',
         'author' => '筆者',
@@ -26,5 +27,7 @@ class BookSeeder extends Seeder
         'created_at' => new DateTime(),
         'updated_at' => new DateTime(),
         'deleted_at' => new DateTime(),    
+        ]);
+        
     }
 }

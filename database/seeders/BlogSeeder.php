@@ -16,7 +16,7 @@ class BlogSeeder extends Seeder
      */
     public function run()
     {
-        /DB::table('blogs')->insert([
+        DB::table('blogs')->insert([
                 'user_id' => 1,
                 'book_title' => '命名の心得',
                 'author' => '筆者',
