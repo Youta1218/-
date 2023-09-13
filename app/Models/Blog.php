@@ -14,8 +14,26 @@ class Blog extends Model
         return $this->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
     protected $fillable = [
+    'user_id',
+    'book_title',
+    'author',
+    'front_cover_image_path',
+    'category_id',
+    'series_id',
     'blog_title',
-    'blog_body',
+    'blog_body'
     ];
     
+    public function user()   
+    {
+        return $this->belogsTo(User::class);  
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function series()
+    {
+        return $this->belongsTo(Series::class);
+    }
 }

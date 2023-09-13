@@ -23,7 +23,7 @@
                     <p class='blog_body'>{{ $blog->blog_body }}</p>
                 </div>
         </div>
-        <div class="edit"><a href="/blogs/{{ $blog->id }}/edit">投稿情報編集</a></div>
+        <div class="edit"><a href="/blogs/{{ $blog->id }}/blogedit">投稿情報編集</a></div>
        <div class="footer">
             <a href="/">戻る</a>
         </div>

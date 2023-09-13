@@ -28,7 +28,7 @@
                     <p class='bookshelf'>{{ $blog->bookshelf_image_path }}</p>
                 </div>
         </div>
-        <div class="edit"><a href="/books/{{ $book->id }}/edit">本情報編集</a></div>
+        <div class="edit"><a href="/books/{{ $book->id }}/bookedit">本情報編集</a></div>
        <div class="footer">
             <a href="/">戻る</a>
         </div>

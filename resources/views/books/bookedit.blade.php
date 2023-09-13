@@ -2,29 +2,28 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>Book</title>
+        <title>登録変更</title>
     </head>
     <body>
-        <h1>本登録</h1>
-        <form action="/posts" method="POST">
+        <h1>本登録情報編集</h1>
+        <form action="/books" method="BOOK">
             @csrf
+            @method('PUT')
             <div class="book_inf">
                 <h2>本情報</h2>
                 <h4>題名</h4>                
-                <input type="text" name="book[title]" placeholder="タイトル"/>
-                <p class="title__error" style="color:red">{{ $errors->first('book.title') }}</p>
+                <input type='text' name='book[title]' value="{{ $book->title }}">
                 <h4>作者</h4> 
-                <textarea name="book[author]" placeholder="作者"></textarea>
-                <p class="author__error" style="color:red">{{ $errors->first('book.author') }}</p>
+                <input type='text' name='book[author]' value="{{ $book->author }}">
+                <h3>表紙</h3>
+                <input type='text' name='book[front_cover_image_path]' value="{{ $book->front_cover_image_path }}">
                 <h4>本の場所</h4> 
-                <textarea name="book[place]" placeholder="一段目"></textarea>
-                <p class="place__error" style="color:red">{{ $errors->first('book.place') }}</p>
+                <input type='text' name='bookshelfks[place]' value="{{ $bookshelf->place }}">
                 <h4>カテゴリー</h4> 
-                <textarea name="book[category]" placeholder="小説"></textarea>
-                <p class="category__error" style="color:red">{{ $errors->first('book.category') }}</p>
+                <input type='text' name='category[name]' value="{{ $category->name }}">
                 <h4>シリーズ</h4> 
-                <textarea name="book[series]" placeholder="シリーズ名"></textarea>
-                <p class="series__error" style="color:red">{{ $errors->first('book.series') }}</p>
+                <input type='text' name='series[name]' value="{{ $series->name }}">
+                
                 
                 
             </div>
