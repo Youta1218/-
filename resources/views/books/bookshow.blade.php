@@ -19,13 +19,13 @@
                     <h3>表紙</h3>
                     <p class=cover>{{ $book->front_cover_image_path }}</p>
                     <h3>本の場所</h3>
-                    <p class='place'>{{ $blog->place }}</p>
+                    <p class='place'>{{ $book->place }}</p>
                     <h3>カテゴリー</h3>
-                    <p class='category'>{{ $blog->category }}</p>
+                    <p class='category'>{{ $book->category }}</p>
                     <h3>シリーズ名</h3>
-                    <p class='series'>{{ $blog->series }}</p>
+                    <p class='series'>{{ $book->series }}</p>
                     <h3>本棚</h3>
-                    <p class='bookshelf'>{{ $blog->bookshelf_image_path }}</p>
+                    <p class='bookshelf'>{{ $book->bookshelf_image_path }}</p>
                 </div>
         </div>
         <div class="edit"><a href="/books/{{ $book->id }}/bookedit">本情報編集</a></div>

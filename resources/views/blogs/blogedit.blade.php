@@ -17,9 +17,9 @@
                 <h3>表紙</h3>
                 <input type='text' name='blog[front_cover_image_path]' value="{{ $blog->front_cover_image_path }}">
                 <h3>カテゴリー</h3>
-                <input type='text' name='category[name]' value="{{ $category->name }}">
+                <input type='text' name='category[name]' value="{{ $blog->category->name }}">
                 <h3>シリーズ</h3>
-                <input type='text' name='series[name]' value="{{ $series->name }}">
+                <input type='text' name='series[name]' value="{{ $blog->series->name }}">
             </div>
             <div class='blog_title'>
                 <h3>ブログタイトル</h3>

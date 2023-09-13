@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use DateTime
+use DateTime;
 
 class SeriesSeeder extends Seeder
 {
@@ -16,6 +16,8 @@ class SeriesSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('series')->insert([
         'name' => '名前',
+        ]);
     }
 }

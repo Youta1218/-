@@ -24,7 +24,6 @@ class Book extends Model
     'series_id'
     ];
     
-<<<<<<< HEAD
      public function user()   
     {
         return $this->belongsTo(User::class);  
@@ -41,7 +40,4 @@ class Book extends Model
     {
         return $this->belongsTo(Series::class);
     }
-=======
-
->>>>>>> c82e362871f605a9806cb95a1dffa8c2905af0e2
 }

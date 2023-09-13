@@ -21,7 +21,7 @@ class BookController extends Controller
     }//
     public function bookshow(Book $book)
     {
-        return view('books.bookshow')->with(['books' => $book]);    
+        return view('books.bookshow')->with(['book' => $book]);    
     }
     public function bookct(Bookshelf $bookshelf,Category $category,Series $series)
     {
