@@ -2,22 +2,33 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>Blog</title>
+        <title>投稿編集ページ</title>
     </head>
     <body>
         <h1>Blog Name</h1>
-        <form action="/posts" method="POST">
+        <form action="/blogs" method="BLOG">
             @csrf
-            <div class="title">
-                <h2>Title</h2>
-                <input type="text" name="blog[blog_title]" placeholder="タイトル"/>
-                <p class="title__error" style="color:red">{{ $errors->first('blog.blog_title') }}</p>
+            @method('PUT')
+            <div class='bloginf'>
+                <h3>題名</h3>
+                <input type='text' name='blog[book_title]' value="{{ $blog->book_title }}">
+                <h3>作者</h3>
+                <input type='text' name='blog[author]' value="{{ $blog->author }}">
+                <h3>表紙</h3>
+                <input type='text' name='blog[front_cover_image_path]' value="{{ $blog->front_cover_image_path }}">
+                <h3>カテゴリー</h3>
+                <input type='text' name='category[name]' value="{{ $category->name }}">
+                <h3>シリーズ</h3>
+                <input type='text' name='series[name]' value="{{ $series->name }}">
             </div>
-            <div class="body">
-                <h2>Body</h2>
-                <textarea name="post[blog_body]" placeholder="今日も1日お疲れさまでした。"></textarea>
-                <p class="body__error" style="color:red">{{ $errors->first('blog.blog_body') }}</p>
+            <div class='blog_title'>
+                <h3>ブログタイトル</h3>
+                <input type='text' name='blog[blog_title]' value="{{ $blog->blog_title }}">
             </div>
+            <div class='blog_body'>
+                <h3>review</h3>
+                <input type='text' name='blog[blog_body]' value="{{ $blog->blog_body }}">
+            </div> 
             <input type="submit" value="保存"/>
         </form>
         <div class="back">[<a href="/">back</a>]</div>

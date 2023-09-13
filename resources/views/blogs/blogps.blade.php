@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <title>本投稿ページ</title>
+        <title>本一覧ページ</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
@@ -12,7 +12,7 @@
          <div class='posts'>
             @foreach ($blogs as $blog)
                 <div class='post'>
-                    <h2 class='title'>{{ $blog->blog_title }}</h2>
+                    <a href="/blogs/{{ $blog->id }}">{{ $blog->blog_title }}</a>
                     <h2 class='blog_title'>{{ $blog->book_title }}</h2>
                     <p class='author'>{{ $blog->author }}</p>
                     <p class='cover'>{{ $blog->front_cover_image_path }}</p>
