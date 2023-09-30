@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('author',50);
             $table->string('front_cover_image_path',200);
             $table->foreignId('bookshelf_id')->constrained()->onDelete('cascade');
+            $table->string('place',50);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('series_id')->constrained()->onDelete('cascade');
             $table->timestamps();

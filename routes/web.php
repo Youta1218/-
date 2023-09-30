@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BookshelfController;
+use App\Http\Controllers\SeriesController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -15,26 +18,35 @@ use App\Http\Controllers\BookController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-//Route::get('/blogs', [BlogController::class, 'blogps']);
+Route::controller(BookController::class)->middleware(['auth'])->group(function(){
+Route::get('/', 'home')->name('HOME');
+Route::put('/books/1/{book}', 'bookupdate');
+Route::post('/books', 'bookstore');
+Route::get('/books/bookps', 'Bookps')->name('ALL');
+Route::get('/books/bookct', 'bookct')->name('本情報登録');
+Route::get('/books/{book}/bookshelf', 'bookshelf');
+Route::get('/books/{book}', 'bookshow');
+Route::get('/books/{book}/bookedit', 'bookedit');
+Route::delete('/books/{book}', 'bookdelete');    
+});
+Route::controller(BlogController::class)->middleware(['auth'])->group(function(){
+Route::put('/blogs/1/{blog}', 'blogupdate');
+Route::post('/blogs', 'blogstore');
+Route::get('/blogs/blogps', 'blogps')->name('BLOG');
+Route::get('/blogs/blogct', 'blogct')->name('ブログ投稿');
+Route::get('/blogs/{blog}', 'blogshow');
+Route::get('/blogs/{blog}/blogedit', 'blogedit');
+Route::delete('/blogs/{blog}', 'blogdelete');
+});
 
-Route::get('/', [BookController::class, 'home']);
+Route::controller(CateogoryController::class)->middleware(['auth'])->group(function(){
+    Route::get('/categories/{category}' , 'category');
+    
+});
 
-Route::get('/blogs/blogps', [BlogController::class, 'blogps']);
-Route::get('/blogs/blogct', [BlogController::class, 'blogct']);
-Route::get('/blogs/{blog}', [BlogController::class ,'blogshow']);
-Route::get('/blogs/{blog}/blogedit', [BlogController::class, 'blogedit']);
-Route::put('/blogs/{blog}', [BlogController::class, 'blogupdate']);
-Route::delete('/blogs/{blog}', [BlogController::class,'blogdelete']);
-
-Route::get('/books/bookps', [BookController::class, 'Bookps']);
-Route::get('/books/bookct', [BookController::class, 'bookct']);
-Route::get('/books/{book}', [BookController::class ,'bookshow']);
-Route::get('/books/{book}/bookedit', [BookController::class, 'bookedit']);
-Route::put('/books/{book}', [BookController::class, 'bookupdate']);
-Route::delete('/books/{book}', [BookController::class,'bookdelete']);    
-
-/**Route::get('/', function () {
-    return view('welcome');
+Route::controller(BookshelfController::class)->middleware(['auth'])->group(function(){
+    Route::get('/bookshelves/{bookshelf}' , 'bookshelf');
+    
 });
 
 Route::get('/dashboard', function () {
@@ -45,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});**/
+});
+
+
+
 
 require __DIR__.'/auth.php';

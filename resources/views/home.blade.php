@@ -1,24 +1,15 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>ホームページ</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    </head>
+    <x-app-layout>
+        <x-slot name="header">
+            HOME
+        </x-slot>
     <body>
-        <h1>My Library</h1>
-        <a href='/blogs/blogct'>blog_create</a>
-        <a href='/books/bookct'>book_create</a>
-        <a href='/blogs/blogps'>blog_page</a>
-        <a href='/blogs/{blog}/blogedit'>blog_edit</a>
          <div class='posts'>
-             <a href='/books/bookps'>全て</a>
+             <a href='/books/bookps'>ALL</a>
                 <div class='shelf'>
-                    <h2>本棚</h2>
-                    @foreach($bookshelves as $bookshelf)
+                    <h2>シリーズ</h2>
+                    @foreach($series_list as $series)
                         <div>
-                            <a href="/books/{{$bookshelf->id}}">{{$bookshelf->name}}</a>
+                            <a href="/books/{{$series->id}}">{{$series->name}}</a>
                         </div>
                     @endforeach    
                 </div>
@@ -26,11 +17,18 @@
                     <h2>カテゴリー</h2>                    
                     @foreach($categories as $category)
                         <div>
-                            <a href="/books/{{$category->id}}">{{$category->name}}</a>
+                            <a href="/categories/{{$category->id}}">{{$category->name}}</a>
                         </div>
                     @endforeach    
                 </div>
-                
+                <div class='bookshelf'>
+                    <h2>本棚</h2>                    
+                    @foreach($bookshelves as $bookshelf)
+                        <div>
+                            <a href="/bookshelves/{{$bookshelf->id}}">{{$bookshelf->name}}</a>
+                        </div>
+                    @endforeach    
+                </div>
         </div>
     </body>
-</html>
+</x-app-layout>

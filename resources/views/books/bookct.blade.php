@@ -1,49 +1,70 @@
-<!DOCTYPE HTML>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>本登録</title>
-    </head>
+<x-app-layout>
+        <x-slot name="header">
+         本情報登録ページ
+        </x-slot>
     <body>
-        <h1>本登録ページ</h1>
-        <form action="/books" method="BOOk">
+     
+        <form action="/books" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="book_inf">
+           
+         
                 <h2>本情報</h2>
+                <div class="book_title">
                 <h4>題名</h4>                
-                <input type="text" name="book[title]" placeholder="タイトル"/>
+                <input type="text" name="book[title]" placeholder="タイトル" value="{{ old('book.title') }}"/>
                 <p class="title__error" style="color:red">{{ $errors->first('book.title') }}</p>
+                </div>
+                <div class="book_author">
                 <h4>作者</h4> 
-                <textarea name="book[author]" placeholder="作者"></textarea>
+                <input name="book[author]" placeholder="作者" value="{{ old('book.author') }}"/>
                 <p class="author__error" style="color:red">{{ $errors->first('book.author') }}</p>
-                <input type=text name="book[front_cover_image_path]" placeholder="本の表紙">
-                <h4>本の場所</h4> 
-                <select name="book[bookshelf_id]">
-                    <input type=text name="bookshelf[place]" placeholder="本棚">
+                </div>
+                <div class="front_cover_image">
+                <h4>表紙</h4>
+                <input type="file" name="front_cover_image_path">
+                </div>
+                <div class="bookshelfname">
+                <h4>本棚</h4> 
+                <input type=text name="bookshelf[bookshelf_input_name]" placeholder="本棚">
+                <select name="bookshelf[bookshelf_select_name]">
                     @foreach($bookshelves as $bookshelf)
-                        <option value="{{ $bookshelf->id }}">{{ $bookshelf->name }}</option>
+                        <option value="{{ $bookshelf->name }}">{{ $bookshelf->name }}</option>
                     @endforeach
-                    <input type=text name="bookshelf[bookshelf_image_path]" placeholder="本棚の写真">
                 </select>
+                </div>
+                <div class="bookplace">    
+                <h4>本の場所</h4> 
+                <input type=text name="book[place]" placeholder="本の場所">
+                
+                </div>
+                <div class="front_cover_image">
+                <h4>本棚の写真</h4>
+                <input type="file" name="bookshelf_image_path">
+                </div>
+                <div class="book_category">
                 <h4>カテゴリー</h4> 
-                <select name="book[category_id]">
-                    <input type=text name="category[name]" placeholder="カテゴリー">
+                <input type=text name="category_input_name" placeholder="カテゴリー">
+                <select name="category_select_name">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+                </div>
+                <div class="book_series">
                 <h4>シリーズ</h4> 
-                <select name="book[series_id]">
-                    <input type=text name="series[name]" placeholder="シリーズ名">
+                <input type=text name="series_input_name" placeholder="シリーズ名">
+                <select name="series_select_name">
                     @foreach($series_list as $series)
-                        <option value="{{ $series->id }}">{{ $series->name }}</option>
+                        <option value="{{ $series->name }}">{{ $series->name }}</option>
                     @endforeach
                 </select>
+                </div>
             </div>
             <div class="body">
             </div>
-            <input type="submit" value="store"/>
+            <input type="submit" value="[保存]"/>
         </form>
-        <div class="back">[<a href="/">back</a>]</div>
+        <div class="back">[<a href="/">戻る</a>]</div>
     </body>
-</html>
+</x-app-layout>
+        
