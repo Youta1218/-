@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>本検索ページ</title>
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    </head>
+<x-app-layout>
+        <x-slot name="header">
+            ALL
+        </x-slot>
     <body>
-        <a href='/books/bookct'>book_create</a>
          <div class='posts'>
             @foreach ($books as $book)
                 <div class='post'>
-                    <a href="/books/{{ $book->id }}">{{ $book->front_cover_image_path }}</a>                    
+                    <h3>表紙</h3>
+                    <a href="/books/{{ $book->id }}"><img src="{{ $book->front_cover_image_path }}" alt="画像が読み込めません。"/></a>                    
+                    <h3>タイトル</h3>
                     <a href="/books/{{ $book->id }}">{{ $book->title }}</a>
+                    <h3>作者</h3>
+                    <a href="/books/{{ $book->id }}">{{ $book->author }}</a>
+                
                 </div>
+            
             @endforeach
         </div>
         <div class='paginate'>
             {{ $books->links() }}
         </div>
+        
     </body>
-</html>
+</x-app-layout>

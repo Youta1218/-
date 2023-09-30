@@ -15,6 +15,21 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('HOME')" :active="request()->routeIs('HOME')">
+                        {{ __('HOME') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('ALL')" :active="request()->routeIs('ALL')">
+                        {{ __('ALL') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('BLOG')" :active="request()->routeIs('BLOG')">
+                        {{ __('BLOG') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('本情報登録')" :active="request()->routeIs('本情報登録')">
+                        {{ __('本情報登録') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('ブログ投稿')" :active="request()->routeIs('ブログ投稿')">
+                        {{ __('ブログ投稿') }}
+                    </x-nav-link>
                 </div>
             </div>
 

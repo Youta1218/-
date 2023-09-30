@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $fillable = [
+        'name'
+        ];
     
     public function books()   
     {
@@ -16,5 +20,9 @@ class Category extends Model
     public function blogs()   
     {
         return $this->hasMany(Blog::class);  
+    }
+    public function getByCategory(int $limit_count = 10)
+    {
+         return $this->books()->with('category')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
 }
