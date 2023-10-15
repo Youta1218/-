@@ -16,7 +16,8 @@ class BlogController extends Controller
     public function blogmypg(Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
 
     {
-    return view('blogs.blogmypg')->with(['blogs' => $blog->getPaginateByLimit()]);
+        $user_id=Auth::user()->id;
+    return view('blogs.blogmypg')->with(['blogs' => $blog->getPaginateByLimit($user_id)]);
     //$blogの中身を戻り値にする。
     }
     
@@ -51,30 +52,58 @@ class BlogController extends Controller
         } else 
         {
             $category_input_name = $request['category_input_name'];
-            // 
-            if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
+            $categories=Auth::user()->categories()->get();
+            $flg=true;
+        
+            foreach($categories as $test_category) {
+            if($test_category->name === $category_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
+            
+            if($flg) {
                 $category->name =$category_input_name;
                 $category->save();
                 $user=Auth::user();
                 $category->users()->attach($user->id);
                 
             } else {
-                $category = Category::where('name', $category_input_name)->first();
+                
+                $category = $categories[0];
+                
             }
         } 
+        
+        
         $input = $request['series'];
         if($request['series_input_name'] == null ) { 
             $series_select_name = $request['series_select_name'];
             $series = Series::where('name', $series_select_name)->first();
         } else {
             $series_input_name = $request['series_input_name'];
-            if(DB::table('series')->where('name', $series_input_name)->doesntExist() ) {
+            $series_list=Auth::user()->series()->get();
+            $flg=true;
+        
+            foreach($series_list as $test_series) {
+            if($test_series->name === $series_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
+            
+            if($flg) {
                 $series->name =$series_input_name;
                 $series->save();
                 $user=Auth::user();
                 $series->users()->attach($user->id);
+                
             } else {
-                $series = Series::where('name', $series_input_name)->first();
+                
+                $series = $series_list[0];
+                
             }
         } 
         
@@ -93,20 +122,38 @@ class BlogController extends Controller
     }
     public function blogupdate(BlogpsRequest $request, Blog $blog, Category $category,Series $series)
     {
-        // dd($request);
-        $input = $request['category'];
-        if($request['category_input_name'] == null ) { 
+       $input = $request['category'];
+        if($request['category_input_name'] == null ) 
+        { 
             $category_select_name = $request['category_select_name'];
             $category = Category::where('name', $category_select_name)->first();
-        } else {
+        } else 
+        {
             $category_input_name = $request['category_input_name'];
-            if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
+            $categories=Auth::user()->categories()->get();
+            $flg=true;
+        
+            foreach($categories as $test_category) {
+            if($test_category->name === $category_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
+            
+            if($flg) {
                 $category->name =$category_input_name;
                 $category->save();
+                $user=Auth::user();
+                $category->users()->attach($user->id);
+                
             } else {
-                $category = Category::where('name', $category_input_name)->first();
+                
+                $category = $categories[0];
+                
             }
-        }
+        } 
+        
         
         $input = $request['series'];
         if($request['series_input_name'] == null ) { 
@@ -114,20 +161,38 @@ class BlogController extends Controller
             $series = Series::where('name', $series_select_name)->first();
         } else {
             $series_input_name = $request['series_input_name'];
-            if(DB::table('series')->where('name', $series_input_name)->doesntExist()) {
-            $series->name =$series_input_name;
-            $series->save();
-            } else {
-                $series = Series::where('name', $series_input_name)->first();
+            $series_list=Auth::user()->series()->get();
+            $flg=true;
+        
+            foreach($series_list as $test_series) {
+            if($test_series->name === $series_input_name) {
+                
+                $flg=false;
+                break;
+            }    
             }
-        }
+            
+            if($flg) {
+                $series->name =$series_input_name;
+                $series->save();
+                $user=Auth::user();
+                $series->users()->attach($user->id);
+                
+            } else {
+                
+                $series = $series_list[0];
+                
+            }
+        } 
         $blog->category_id = $category->id;
         $blog->series_id = $series->id;
         
         $input = $request['blog'];
         $front_cover_image_path = Cloudinary::upload($request->file('front_cover_image_path')->getRealPath())->getSecurePath();
         $input += ['front_cover_image_path' => $front_cover_image_path];
-        
+        $input['user_id'] = Auth::id();
+        $input['category_id'] = $category->id;
+        $input['series_id'] = $series->id;
         $blog->fill($input)->save();
         
         return redirect('/blogs/' . $blog->id);
