@@ -106,22 +106,6 @@ class BookController extends Controller
             }
             $bookshelf_id = $bookshelf -> latest('id')->first()->id;
         } 
-        // if($request['bookshelf']['bookshelf_input_name'] == null ) { 
-        //     $bookshelf_select_name = $request['bookshelf']['bookshelf_select_name'];
-        //     $bookshelf = Bookshelf::where('name', $bookshelf_select_name)->first();
-            
-        //     $bookshelf_id = $bookshelf ->id;
-            
-        // } else {
-        //     $bookshelf_input_name = $request['bookshelf']['bookshelf_input_name'];
-        //   // $bookshelf->name =$bookshelf_input_name;
-        //     $input += ['name' => $bookshelf_input_name];
-        //     $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
-        //     $input += ['bookshelf_image_path' => $bookshelf_image_path];
-        //     $bookshelf->fill($input)->save();
-        //     $bookshelf_id = $bookshelf -> latest('id')->first()->id;
-        // } 
-        // dd($bookshelf);
         
         $input = $request['category'];
         if($request['category_input_name'] == null ) 
@@ -134,8 +118,8 @@ class BookController extends Controller
             $categories=Auth::user()->categories()->get();
             $flg=true;
         
-            foreach($categories as $test) {
-            if($test->name === $category_input_name) {
+            foreach($categories as $test_category) {
+            if($test_category->name === $category_input_name) {
                 
                 $flg=false;
                 break;
@@ -162,13 +146,27 @@ class BookController extends Controller
             $series = Series::where('name', $series_select_name)->first();
         } else {
             $series_input_name = $request['series_input_name'];
-            if(DB::table('series')->where('name', $series_input_name)->doesntExist() ) {
+            $series_list=Auth::user()->series()->get();
+            $flg=true;
+        
+            foreach($series_list as $test_series) {
+            if($test_series->name === $series_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
+            
+            if($flg) {
                 $series->name =$series_input_name;
                 $series->save();
                 $user=Auth::user();
                 $series->users()->attach($user->id);
+                
             } else {
-                $series = Series::where('name', $series_input_name)->first();
+                
+                $series = $series_list[0];
+                
             }
         } 
         
@@ -183,69 +181,78 @@ class BookController extends Controller
         return redirect('/books/' . $book->id);    
         
     }
-    public function bookedit(book $book,Bookshelf $bookshelf,Category $category,Series $series)
+    public function bookedit(Book $book,Bookshelf $bookshelf,Category $category,Series $series)
     {
+        $user_id=Auth::id();
+        $books=Book::where('user_id', $user_id)->get();
+        
+        $unique_bookshelves=Auth::user()->bookshelves()->get();
+        
         $categories=Auth::user()->categories()->get();
         
         $series=Auth::user()->series()->get();
         
-        return view('books.bookedit')->with(['book' => $book,'bookshelves' => $bookshelf->get(),'categories' => $categories,'series_list' => $series]);
+        return view('books.bookedit')->with(['book' => $book,'bookshelves' => $unique_bookshelves,'categories' => $categories,'series_list' => $series]);
     }
+    
     public function bookupdate(BookpsRequest $request, Book $book,Bookshelf $bookshelf,Category $category,Series $series, User $user)
     {
         // dd($request);
-        $input = $request['bookshelf'];
-        if($request['bookshelf']['bookshelf_input_name'] == null ) { 
+        $input = $request['bookshelf']['bookshelf_input_name'];
+        
+        if($input == null ) { 
             $bookshelf_select_name = $request['bookshelf']['bookshelf_select_name'];
-            $bookshelf = Bookshelf::where('name', $bookshelf_select_name)->first();
-            $bookshelf_id = $bookshelf ->id;
-            
+            // $bookshelf = Bookshelf::where('name', $bookshelf_select_name)->first();
+            $bookshelf_id = $bookshelf_select_name;
         } else {
-            $bookshelf_input_name = $request['bookshelf']['bookshelf_input_name'];
-           // $bookshelf->name =$bookshelf_input_name;
-           
-            if(DB::table('bookshelves')->where('name', $bookshelf_input_name)->doesntExist() ) {
-                $input += ['name' => $bookshelf_input_name];
-               $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
+            $bookshelf_input_name = $input;
+           // dd(DB::table('bookshelves')->where('user_id',Auth::id())->where('name', $bookshelf_input_name)->doesntExist());
+            if(DB::table('bookshelves')->where('user_id',Auth::id())->where('name', $bookshelf_input_name)->doesntExist() ) {
+                $input = ['name' => $bookshelf_input_name];
+                $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
                 $input += ['bookshelf_image_path' => $bookshelf_image_path];
+                $input += ['user_id' => Auth::id()];
                 $bookshelf->fill($input)->save(); 
                 // $bookshelf->save();
                 
             } else {
-                $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->first();
+                $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->where('user_id',Auth::id())->first();
             }
-            // $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
-            // $input += ['bookshelf_image_path' => $bookshelf_image_path];
-            // $bookshelf->fill($input)->save();
             $bookshelf_id = $bookshelf -> latest('id')->first()->id;
         } 
         
         $input = $request['category'];
-        if($request['category_input_name'] == null ) { 
+        if($request['category_input_name'] == null ) 
+        { 
             $category_select_name = $request['category_select_name'];
             $category = Category::where('name', $category_select_name)->first();
-        } else {
+        } else 
+        {
             $category_input_name = $request['category_input_name'];
+            $categories=Auth::user()->categories()->get();
+            $flg=true;
+        
+            foreach($categories as $test_category) {
+            if($test_category->name === $category_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
             
-            $category_serach_id = Category::where('name',$category_input_name)->first(['id']);
-            //dd($category_serach_id);
-            //dd(DB::table('category_user')->where('category_id', $category_serach_id)->where('user_id',Auth::id())->doesntExist());
-            if(DB::table('category_user')->where('category_id', $category_serach_id)->where('user_id',Auth::id())->doesntExist() ) {
-                if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
-                    $category->name =$category_input_name;
-                    $category->save();
-                    $user=Auth::user();
-                    $category->users()->attach($user->id);
-                } else {
-                    $user=Auth::user();
-                    $category = Category::where('name',$category_input_name)->first();
-                    //dd($category);
-                    $category->users()->attach($user->id);
-                }
+            if($flg) {
+                $category->name =$category_input_name;
+                $category->save();
+                $user=Auth::user();
+                $category->users()->attach($user->id);
+                
             } else {
-                $category = Category::where('name', $category_input_name)->first();
+                
+                $category = $categories[0];
+                
             }
         } 
+        
         
         $input = $request['series'];
         if($request['series_input_name'] == null ) { 
@@ -253,21 +260,27 @@ class BookController extends Controller
             $series = Series::where('name', $series_select_name)->first();
         } else {
             $series_input_name = $request['series_input_name'];
-            $series_serach_id = Series::where('name',$series_input_name)->first(['id']);
+            $series_list=Auth::user()->series()->get();
+            $flg=true;
+        
+            foreach($series_list as $test_series) {
+            if($test_series->name === $series_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
             
-            if(DB::table('series_user')->where('series_id', $series_serach_id)->where('user_id',Auth::id())->doesntExist()) {
-                if(DB::table('series')->where('name', $series_input_name)->doesntExist() ) {
-                    $series->name =$series_input_name;
-                    $series->save();
-                    $user=Auth::user();
-                    $series->users()->attach($user->id);
-                } else {
-                    $user=Auth::user();
-                    $series = Series::where('name',$series_input_name)->first();
-                    $series->users()->attach($user->id);
-                }
+            if($flg) {
+                $series->name =$series_input_name;
+                $series->save();
+                $user=Auth::user();
+                $series->users()->attach($user->id);
+                
             } else {
-                $series = Series::where('name', $series_input_name)->first();
+                
+                $series = $series_list[0];
+                
             }
         } 
         
@@ -290,9 +303,10 @@ class BookController extends Controller
     }
     public function bookdelete(Book $book)
     {
-        $category=Category::find($book->category_id);
+        //$category=Category::find($book->category_id);
         $book->delete();
-        $category->users()->detach(Auth::id());
+        //$category->users()->detach(Auth::id());
+        
         // if(Book::where('user_id',Auth::id())->where('category_id', $category_id)->doesntExist()) {
         //     Category::where('id',$category_id)->de
         // }
