@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
+    public function blogmypg(Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
+
+    {
+    return view('blogs.blogmypg')->with(['blogs' => $blog->getPaginateByLimit()]);
+    //$blogの中身を戻り値にする。
+    }
+    
     public function blogps(Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
 
     {
@@ -23,30 +30,54 @@ class BlogController extends Controller
     {
         return view('blogs.blogshow')->with(['blog' => $blog]);    
     }
-    public function blogct(Category $category,Series $series)
+    public function blogct(Blog $blog, Category $category,Series $series)
     {
-        return view('blogs.blogct')->with(['categories' => $category->get(),'series_list' => $series->get()]);
+        $user_id=Auth::id();
+        $blogs=Blog::where('user_id', $user_id)->get();
+       
+        $categories=Auth::user()->categories()->get();
+        
+        $series=Auth::user()->series()->get();
+        
+        return view('blogs.blogct')->with(['categories' => $categories,'series_list' => $series]);
     }
-    public function blogstore(Request $request, Blog $blog, Category $category,Series $series)
+    public function blogstore(BlogpsRequest $request, Blog $blog, Category $category,Series $series)
     {
         $input = $request['category'];
-        if($request['category_input_name'] == null ) { 
+        if($request['category_input_name'] == null ) 
+        { 
             $category_select_name = $request['category_select_name'];
             $category = Category::where('name', $category_select_name)->first();
-        } else {
+        } else 
+        {
             $category_input_name = $request['category_input_name'];
-            $category->name =$category_input_name;
-            $category->save();
-        }
+            // 
+            if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
+                $category->name =$category_input_name;
+                $category->save();
+                $user=Auth::user();
+                $category->users()->attach($user->id);
+                
+            } else {
+                $category = Category::where('name', $category_input_name)->first();
+            }
+        } 
         $input = $request['series'];
         if($request['series_input_name'] == null ) { 
             $series_select_name = $request['series_select_name'];
             $series = Series::where('name', $series_select_name)->first();
         } else {
             $series_input_name = $request['series_input_name'];
-            $series->name =$series_input_name;
-            $series->save();
-        }
+            if(DB::table('series')->where('name', $series_input_name)->doesntExist() ) {
+                $series->name =$series_input_name;
+                $series->save();
+                $user=Auth::user();
+                $series->users()->attach($user->id);
+            } else {
+                $series = Series::where('name', $series_input_name)->first();
+            }
+        } 
+        
         $input = $request['blog'];
         $front_cover_image_path = Cloudinary::upload($request->file('front_cover_image_path')->getRealPath())->getSecurePath();
         $input += ['front_cover_image_path' => $front_cover_image_path];
@@ -60,7 +91,7 @@ class BlogController extends Controller
     {
         return view('blogs.blogedit')->with(['blog' => $blog,'categories' => $category->get(),'series_list' => $series->get()]);
     }
-    public function blogupdate(Request $request, Blog $blog, Category $category,Series $series)
+    public function blogupdate(BlogpsRequest $request, Blog $blog, Category $category,Series $series)
     {
         // dd($request);
         $input = $request['category'];

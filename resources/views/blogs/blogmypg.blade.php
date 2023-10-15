@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        BLOG
+        MY BLOG PAGE
     </x-slot>
      <div class='my-4'>
          <div class='grid grid-cols-2 gap-4 content-stretch place-self-stretch place-items-center'>

@@ -10,11 +10,11 @@ class Book extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    public function getPaginateByLimit(int $limit_count = 2)
+    public function getPaginateByLimit($user_id,int $limit_count = 6)
 
     {
     // updated_atで降順に並べたあと、limitで件数制限をかける
-        return $this->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        return $this->where('user_id', $user_id)->orderBy('title')->paginate($limit_count);
     }
 
     protected $fillable = [

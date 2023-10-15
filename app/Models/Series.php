@@ -23,8 +23,12 @@ class Series extends Model
     {
         return $this->hasMany(Blog::class);  
     }
+    public function users()   
+    {
+        return $this->belongsToMany(User::class);  
+    }
     public function getBySeries(int $limit_count = 10)
     {
-         return $this->books()->with('series')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+         return $this->books()->with('series')->orderBy('title')->paginate($limit_count);
     }
 }

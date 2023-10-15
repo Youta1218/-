@@ -13,6 +13,12 @@ class Category extends Model
         'name'
         ];
     
+    public function getPaginateByLimit(int $limit_count = 8)
+    {
+    // updated_atで降順に並べたあと、limitで件数制限をかける
+        return $this->orderBy('name')->paginate($limit_count);
+    }
+    
     public function books()   
     {
         return $this->hasMany(Book::class);  
@@ -21,8 +27,13 @@ class Category extends Model
     {
         return $this->hasMany(Blog::class);  
     }
-    public function getByCategory(int $limit_count = 10)
+    public function users()   
     {
-         return $this->books()->with('category')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        return $this->belongsToMany(User::class);  
+    }
+    
+    public function getByCategory(int $limit_count = 8)
+    {
+         return $this->books()->with('category')->orderBy('title')->paginate($limit_count);
     }
 }
