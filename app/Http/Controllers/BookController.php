@@ -72,39 +72,37 @@ class BookController extends Controller
        // $user = auth()->user();
         $user_id=Auth::id();
         $books=Book::where('user_id', $user_id)->get();
-        $bookshelves=collect([]);
-        foreach($books as $book) 
-        {
-            $bookshelves->add($book->bookshelf);
-        }
-        $unique_bookshelves=$bookshelves->unique('id');
+        
+        $unique_bookshelves=Auth::user()->bookshelves()->get();
        
         $categories=Auth::user()->categories()->get();
         
         $series=Auth::user()->series()->get();
-        
         return view('books.bookct')->with(['bookshelves' => $unique_bookshelves,'series_list' => $series,'categories' =>$categories]);
     }
     public function bookstore(BookpsRequest $request, Book $book,Bookshelf $bookshelf,Category $category,Series $series, User $user)
     {
         
         // dd($request);
-        $input = $request['bookshelf'];
-        if($request['bookshelf']['bookshelf_input_name'] == null ) { 
+        $input = $request['bookshelf']['bookshelf_input_name'];
+        
+        if($input == null ) { 
             $bookshelf_select_name = $request['bookshelf']['bookshelf_select_name'];
-            $bookshelf = Bookshelf::where('name', $bookshelf_select_name)->first();
-            $bookshelf_id = $bookshelf ->id;
+            // $bookshelf = Bookshelf::where('name', $bookshelf_select_name)->first();
+            $bookshelf_id = $bookshelf_select_name;
         } else {
-            $bookshelf_input_name = $request['bookshelf']['bookshelf_input_name'];
-            if(DB::table('bookshelves')->where('name', $bookshelf_input_name)->doesntExist() ) {
-                $input += ['name' => $bookshelf_input_name];
-               $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
+            $bookshelf_input_name = $input;
+           // dd(DB::table('bookshelves')->where('user_id',Auth::id())->where('name', $bookshelf_input_name)->doesntExist());
+            if(DB::table('bookshelves')->where('user_id',Auth::id())->where('name', $bookshelf_input_name)->doesntExist() ) {
+                $input = ['name' => $bookshelf_input_name];
+                $bookshelf_image_path = Cloudinary::upload($request->file('bookshelf_image_path')->getRealPath())->getSecurePath();
                 $input += ['bookshelf_image_path' => $bookshelf_image_path];
+                $input += ['user_id' => Auth::id()];
                 $bookshelf->fill($input)->save(); 
                 // $bookshelf->save();
                 
             } else {
-                $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->first();
+                $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->where('user_id',Auth::id())->first();
             }
             $bookshelf_id = $bookshelf -> latest('id')->first()->id;
         } 

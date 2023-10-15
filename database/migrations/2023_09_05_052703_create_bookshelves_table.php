@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('bookshelves', function (Blueprint $table) {
             $table->id();
+             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name',50);
             $table->string('bookshelf_image_path',200);
         });

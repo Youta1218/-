@@ -58,5 +58,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Series::class);  
     }
+    public function bookshelves()   
+    {
+        return $this->hasMany(Bookshelf::class);  
+    }
+    
     
 }

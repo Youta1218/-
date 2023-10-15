@@ -24,7 +24,7 @@
             <input type=text name="bookshelf[bookshelf_input_name]" placeholder="本棚">
             <select name="bookshelf[bookshelf_select_name]">
                 @foreach($bookshelves as $bookshelf)
-                    <option value="{{ $bookshelf->name }}">{{ $bookshelf->name }}</option>
+                    <option value="{{ $bookshelf->id }}">{{ $bookshelf->name }}</option>
                 @endforeach
             </select>
         </div>
