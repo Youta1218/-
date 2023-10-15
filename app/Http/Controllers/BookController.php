@@ -131,15 +131,27 @@ class BookController extends Controller
         } else 
         {
             $category_input_name = $request['category_input_name'];
-            // 
-            if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
+            $categories=Auth::user()->categories()->get();
+            $flg=true;
+        
+            foreach($categories as $test) {
+            if($test->name === $category_input_name) {
+                
+                $flg=false;
+                break;
+            }    
+            }
+            
+            if($flg) {
                 $category->name =$category_input_name;
                 $category->save();
                 $user=Auth::user();
                 $category->users()->attach($user->id);
                 
             } else {
-                $category = Category::where('name', $category_input_name)->first();
+                
+                $category = $categories[0];
+                
             }
         } 
         
@@ -217,6 +229,7 @@ class BookController extends Controller
             
             $category_serach_id = Category::where('name',$category_input_name)->first(['id']);
             //dd($category_serach_id);
+            //dd(DB::table('category_user')->where('category_id', $category_serach_id)->where('user_id',Auth::id())->doesntExist());
             if(DB::table('category_user')->where('category_id', $category_serach_id)->where('user_id',Auth::id())->doesntExist() ) {
                 if(DB::table('categories')->where('name', $category_input_name)->doesntExist() ) {
                     $category->name =$category_input_name;
@@ -277,7 +290,13 @@ class BookController extends Controller
     }
     public function bookdelete(Book $book)
     {
+        $category=Category::find($book->category_id);
         $book->delete();
+        $category->users()->detach(Auth::id());
+        // if(Book::where('user_id',Auth::id())->where('category_id', $category_id)->doesntExist()) {
+        //     Category::where('id',$category_id)->de
+        // }
+        // dd(Book::where('category_id', $category_id)->exists());
         return redirect('/');
     }
 

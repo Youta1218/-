@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Category;
 
 class BookpsRequest extends FormRequest
 {
@@ -28,7 +29,9 @@ class BookpsRequest extends FormRequest
             'book.author' => 'required|string|max:4000',
             'front_cover_image_path' => 'required',
             'book.place' => 'required|string|max:100',
+            // 'category_input_name' =>'unique:'.Category::class,
         ];
+        
     }
     public function messages()
     {
@@ -39,4 +42,5 @@ class BookpsRequest extends FormRequest
             'book.place.required' => '本の場所未入力',
         ];
     }
+    
 }

@@ -13,8 +13,13 @@ class CategoryController extends Controller
 {
     public function category(Category $category)
     {
-        $books=$category->getByCategory();
-        $user_books =$books->whereIn("user_id", Auth::id());
+        
+        $user_books = $category->books()->where('user_id', Auth::id())->get();
+        // dd($category->books()->where('user_id', Auth::id())->get());
+        // foreach ($books as $book) {
+        //     $user_books += [$book->where('user_id', Auth::id())->first()];
+            
+        // }
         //$this->authorize('view', $user_books->first());
     return view('books.category')->with(['books' => $user_books, 'category'=>$category]);
     }   
