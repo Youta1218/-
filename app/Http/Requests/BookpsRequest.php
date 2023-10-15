@@ -26,6 +26,8 @@ class BookpsRequest extends FormRequest
         return [
             'book.title' => 'required|string|max:100',
             'book.author' => 'required|string|max:4000',
+            'front_cover_image_path' => 'required',
+            'book.place' => 'required|string|max:100',
         ];
     }
     public function messages()
@@ -33,6 +35,8 @@ class BookpsRequest extends FormRequest
         return [
             'book.title.required' => 'タイトル未入力',
             'book.author.required' => '作者未入力',
+            'front_cover_image_path.required' => '写真未選択',
+            'book.place.required' => '本の場所未入力',
         ];
     }
 }

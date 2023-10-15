@@ -20,18 +20,18 @@ use App\Http\Controllers\SeriesController;
 */
 Route::controller(BookController::class)->middleware(['auth'])->group(function(){
 Route::get('/', 'home')->name('HOME');
-Route::put('/books/1/{book}', 'bookupdate');
+Route::put('/books/update/{book}', 'bookupdate');
 Route::post('/books', 'bookstore');
 Route::get('/books/bookps', 'Bookps')->name('ALL');
 Route::get('/books/bookct', 'bookct')->name('本情報登録');
-Route::get('/books/{book}/bookshelf', 'bookshelf');
 Route::get('/books/{book}', 'bookshow');
 Route::get('/books/{book}/bookedit', 'bookedit');
 Route::delete('/books/{book}', 'bookdelete');    
 });
 Route::controller(BlogController::class)->middleware(['auth'])->group(function(){
-Route::put('/blogs/1/{blog}', 'blogupdate');
+Route::put('/blogs/update/{blog}', 'blogupdate');
 Route::post('/blogs', 'blogstore');
+Route::get('/blogmypg', 'blogmypg')->name('MY BLOG');
 Route::get('/blogs/blogps', 'blogps')->name('BLOG');
 Route::get('/blogs/blogct', 'blogct')->name('ブログ投稿');
 Route::get('/blogs/{blog}', 'blogshow');
@@ -39,14 +39,19 @@ Route::get('/blogs/{blog}/blogedit', 'blogedit');
 Route::delete('/blogs/{blog}', 'blogdelete');
 });
 
-Route::controller(CateogoryController::class)->middleware(['auth'])->group(function(){
+Route::controller(CategoryController::class)->middleware(['auth'])->group(function(){
     Route::get('/categories/{category}' , 'category');
-    
+    Route::get('/categories' , 'categoryps')->name('カテゴリー一覧');
 });
 
 Route::controller(BookshelfController::class)->middleware(['auth'])->group(function(){
     Route::get('/bookshelves/{bookshelf}' , 'bookshelf');
-    
+    Route::get('/bookshelves' , 'bookshelfps')->name('本棚一覧');
+});
+
+Route::controller(SeriesController::class)->middleware(['auth'])->group(function(){
+    Route::get('/series/{series}' , 'series');
+    Route::get('/series' , 'seriesps')->name('シリーズ一覧');
 });
 
 Route::get('/dashboard', function () {

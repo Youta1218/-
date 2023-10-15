@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-green-400 shadow border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 text-black underline underline-offset-4 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -20,6 +20,18 @@
                     </x-nav-link>
                     <x-nav-link :href="route('ALL')" :active="request()->routeIs('ALL')">
                         {{ __('ALL') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('カテゴリー一覧')" :active="request()->routeIs('カテゴリー一覧')">
+                        {{ __('カテゴリー一覧') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('シリーズ一覧')" :active="request()->routeIs('シリーズ一覧')">
+                        {{ __('シリーズ一覧') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('本棚一覧')" :active="request()->routeIs('本棚一覧')">
+                        {{ __('本棚一覧') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('MY BLOG')" :active="request()->routeIs('MY BLOG')">
+                        {{ __('MY BLOG') }}
                     </x-nav-link>
                     <x-nav-link :href="route('BLOG')" :active="request()->routeIs('BLOG')">
                         {{ __('BLOG') }}
@@ -30,6 +42,7 @@
                     <x-nav-link :href="route('ブログ投稿')" :active="request()->routeIs('ブログ投稿')">
                         {{ __('ブログ投稿') }}
                     </x-nav-link>
+                    
                 </div>
             </div>
 

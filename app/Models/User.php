@@ -50,4 +50,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Blog::class);  
     }
+    public function categories()   
+    {
+        return $this->belongsToMany(Category::class);  
+    }
+    public function series()   
+    {
+        return $this->belongsToMany(Series::class);  
+    }
+    
 }

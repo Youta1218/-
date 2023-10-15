@@ -19,7 +19,7 @@ class Bookshelf extends Model
         
         return $this->hasMany(Book::class);  
     }
-    public function getByCategory(int $limit_count = 10)
+    public function getByBookshelf(int $limit_count = 10)
     {
          return $this->books()->with('bookshelf')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
