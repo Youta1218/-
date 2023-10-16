@@ -6,10 +6,10 @@
            <div class='grid grid-cols-2 gap-4 content-stretch place-self-stretch place-items-center'>
                 @foreach($series_list as $series)
                     <div class="py-8 px-20 m-auto bg-white shadow-sm sm:rounded-lg text-xl">
-                        <a href="/series/{{$series->id}}">・{{$series->name}}</a>
+                        <a href="/series/{{$series->id}}">・{{$series->name}} {{$series->getBookCount()}}件</a>
                     </div>
                 @endforeach    
             </div>
         </div>  
-    
+    {{ $series_list->links() }}
 </x-app-layout>

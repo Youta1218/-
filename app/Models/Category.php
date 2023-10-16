@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Category extends Model
 {
@@ -35,5 +36,10 @@ class Category extends Model
     public function getByCategory(int $limit_count = 8)
     {
          return $this->books()->with('category')->orderBy('title')->paginate($limit_count);
+    }
+    
+    public function getBookCount()
+    {
+        return $this->books()->where('user_id',Auth::id())->count();
     }
 }

@@ -15,5 +15,5 @@
             </div>
         @endforeach    
     </div>   
-    
+    {{ $books->links() }}
 </x-app-layout>
