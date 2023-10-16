@@ -13,16 +13,7 @@
                         <img class='h-48 border-8 border-indigo-600' src="{{ $blog->front_cover_image_path }}" alt="画像が読み込めません。"/>
                     </div>
                 </div>
-                <div class='p-12 ml-40'>
-                @if(auth()->id() == $blog->user_id)
-                    <div class="edit"><a class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' href="/blogs/{{ $blog->id }}/blogedit">[ブログ投稿情報編集]</a></div>
-                    <form action="/blogs/{{ $blog->id }}" id="form_{{ $blog->id }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' type="button" onclick="blogdeletePost({{$blog->id}})">[削除]</button>
-                    </form>
-                @endif
-                </div>
+                
             </div>
             <div class='my-auto'>
                 <div class=''>
@@ -38,13 +29,24 @@
                         <p class='mt-8'>{{ $blog->blog_body }}</p>
                     </div>    
                 </div>
-                <div class='p-12 mb-12 mr-40'>
-                    <a class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' href="/blogs/blogps">[戻る]</a>
-                </div>
+                
             </div>
         </div>
-        
-        
+        <div class='flex justify-center'>
+            <div class='p-12 ml-40'>
+                @if(auth()->id() == $blog->user_id)
+                    <div class="edit"><a class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' href="/blogs/{{ $blog->id }}/blogedit">[ブログ投稿情報編集]</a></div>
+                    <form action="/blogs/{{ $blog->id }}" id="form_{{ $blog->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' type="button" onclick="blogdeletePost({{$blog->id}})">[削除]</button>
+                    </form>
+                @endif
+            </div>
+            <div class='p-12 mr-40'>
+                <button class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' onclick="history.back();">[戻る]</button>
+            </div>
+        </div>
     </div>
     <script>
         function blogdeletePost(id) {

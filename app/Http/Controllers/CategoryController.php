@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function category(Category $category)
     {
         
-        $user_books = $category->books()->where('user_id', Auth::id())->get();
+        $user_books = $category->books()->where('user_id', Auth::id())->orderBy('title', 'ASC')->paginate(6);
         // dd($category->books()->where('user_id', Auth::id())->get());
         // foreach ($books as $book) {
         //     $user_books += [$book->where('user_id', Auth::id())->first()];
@@ -25,7 +25,7 @@ class CategoryController extends Controller
     }   
     public function categoryps (Category $category)
     {
-        $categories=Auth::user()->categories()->get();
+        $categories=Auth::user()->categories()->orderBy('name', 'ASC')->paginate(9);
         
         
     return view('books.categoryps')->with(['categories' => $categories]);

@@ -17,38 +17,44 @@ class BookController extends Controller
 {
     public function home (Request $request)
     {
-        $user=Auth::user()->id;
+        $user=Auth::user();
          //検索フォームに入力された値を取得
         $series = $request->input('series');
         $category = $request->input('category');
         $keyword = $request->input('keyword');
         // dd($category,$series);
         $query = Book::query();
-        //テーブル結合
-        $query->join('series', function ($query) use ($request) {
-            $query->on('books.series_id', '=', 'series.id');
-            })->join('categories', function ($query) use ($request) {
-            $query->on('books.category_id', '=', 'categories.id');
-            });
-            
-        // dd($query->get());
+        // テーブル結合
+        // $query->leftJoin('series', function ($query) use ($request) {
+        //     $query->on('books.series_id', '=', 'series.id');
+        //     })->leftJoin('categories', function ($query) use ($request) {
+        //     $query->on('books.category_id', '=', 'categories.id');
+        //     });
+        // $query->leftJoin('series', 'books.series_id', '=', 'series.id');
+        //->leftJoin('categories','books.category_id', '=', 'categories.id');
         if(!empty($series)) {
-            
-            $query->where('series.name', 'LIKE', $series);
+            $query->whereHas('series', function ($q) use ($series) {
+                $q->where('name', 'LIKE', $series);
+            });
+            // $query->where('series.name', 'LIKE', $series);
         }
 
         if(!empty($category)) {
-            $query->where('categories.name', 'LIKE', $category);
+            $query->whereHas('category', function ($q) use ($category) {
+                $q->where('name', 'LIKE', $category);
+            });
+            // $query->where('categories.name', 'LIKE', $category);
         }
 
         if(!empty($keyword)) {
             $query->where('title', 'LIKE', "%{$keyword}%");
         }
 
-        $books = $query->where('user_id', $user)->get();
+        $books = $query->where('user_id', $user->id)->get();
         //dd($books);
-        $series_list = Series::all();
-        $categories_list = Category::all();
+        $series_list = $user->series;
+        //dd($series_list);
+        $categories_list = $user->categories;
 
         return view('home', compact('books', 'keyword', 'series', 'category', 'series_list', 'categories_list'));
        
@@ -108,75 +114,86 @@ class BookController extends Controller
         } 
         
         $input = $request['category'];
-        if($request['category_input_name'] == null ) 
-        { 
-            $category_select_name = $request['category_select_name'];
-            $category = Category::where('name', $category_select_name)->first();
-        } else 
-        {
-            $category_input_name = $request['category_input_name'];
-            $categories=Auth::user()->categories()->get();
-            $flg=true;
+        $user=Auth::user();
         
-            foreach($categories as $test_category) {
-            if($test_category->name === $category_input_name) {
-                
-                $flg=false;
-                break;
-            }    
-            }
+        // 入力欄にキーワードがあるか
+        if($request['category_input_name'] == null ) { 
+            // セレクトからデータ受け取り
+            $category_id = $request['category_select_name'];
+            // $category = Category::where('name', $category_select_name)->first();
             
-            if($flg) {
+        } else {
+            // キーワードある場合
+            $category_input_name = $request['category_input_name'];
+            
+            
+            // カテゴリーテーブルにあるか
+            if( DB::table('categories')->where('name', $category_input_name)->doesntExist()) {
+                // ない場合
                 $category->name =$category_input_name;
                 $category->save();
-                $user=Auth::user();
                 $category->users()->attach($user->id);
-                
+  
             } else {
                 
-                $category = $categories[0];
+                // ある場合 
+                $category = Category::where('name',$category_input_name)->first();
                 
+                // 中間テーブルにあるか
+                if(DB::table('category_user')->where('category_id', $category->id)->where('user_id',$user->id)->doesntExist() ) {
+                    // ない
+                    $category->users()->attach($user->id);
+                    // $category = Category::where('name',$category_input_name)->first();
+                } 
+                // $category = Category::where('name', $category_input_name)->first();
             }
+            $category_id = $category->id;
         } 
-        
         
         $input = $request['series'];
-        if($request['series_input_name'] == null ) { 
-            $series_select_name = $request['series_select_name'];
-            $series = Series::where('name', $series_select_name)->first();
-        } else {
-            $series_input_name = $request['series_input_name'];
-            $series_list=Auth::user()->series()->get();
-            $flg=true;
         
-            foreach($series_list as $test_series) {
-            if($test_series->name === $series_input_name) {
-                
-                $flg=false;
-                break;
-            }    
-            }
+        // 入力欄にキーワードがあるか
+        if($request['series_input_name'] == null ) { 
+            // セレクトからデータ受け取り
+            $series_id = $request['series_select_name'];
+            // $series = series::where('name', $series_select_name)->first();
             
-            if($flg) {
+        } else {
+            // キーワードある場合
+            $series_input_name = $request['series_input_name'];
+            
+            
+            // カテゴリーテーブルにあるか
+            if( DB::table('series')->where('name', $series_input_name)->doesntExist()) {
+                // ない場合
                 $series->name =$series_input_name;
                 $series->save();
-                $user=Auth::user();
                 $series->users()->attach($user->id);
-                
+  
             } else {
                 
-                $series = $series_list[0];
+                // ある場合 
+                $series = series::where('name',$series_input_name)->first();
                 
+                // 中間テーブルにあるか
+                if(DB::table('series_user')->where('series_id', $series->id)->where('user_id',$user->id)->doesntExist() ) {
+                    // ない
+                    $series->users()->attach($user->id);
+                    // $series = series::where('name',$series_input_name)->first();
+                } 
+                // $series = series::where('name', $series_input_name)->first();
             }
+            $series_id = $series->id;
         } 
+        
         
         $input = $request['book'];
         $front_cover_image_path = Cloudinary::upload($request->file('front_cover_image_path')->getRealPath())->getSecurePath();
         $input += ['front_cover_image_path' => $front_cover_image_path];
         $input['user_id'] = Auth::id();
         $input += ['bookshelf_id' => $bookshelf_id];
-        $input['category_id'] = $category->id;
-        $input['series_id'] = $series->id;
+        $input['category_id'] = $category_id;
+        $input['series_id'] = $series_id;
         $book->fill($input)->save();
         return redirect('/books/' . $book->id);    
         
@@ -222,82 +239,85 @@ class BookController extends Controller
         } 
         
         $input = $request['category'];
-        if($request['category_input_name'] == null ) 
-        { 
-            $category_select_name = $request['category_select_name'];
-            $category = Category::where('name', $category_select_name)->first();
-        } else 
-        {
-            $category_input_name = $request['category_input_name'];
-            $categories=Auth::user()->categories()->get();
-            $flg=true;
+        $user=Auth::user();
         
-            foreach($categories as $test_category) {
-            if($test_category->name === $category_input_name) {
-                
-                $flg=false;
-                break;
-            }    
-            }
+        // 入力欄にキーワードがあるか
+        if($request['category_input_name'] == null ) { 
+            // セレクトからデータ受け取り
+            $category_id = $request['category_select_name'];
+            // $category = Category::where('name', $category_select_name)->first();
             
-            if($flg) {
+        } else {
+            // キーワードある場合
+            $category_input_name = $request['category_input_name'];
+            
+            
+            // カテゴリーテーブルにあるか
+            if( DB::table('categories')->where('name', $category_input_name)->doesntExist()) {
+                // ない場合
                 $category->name =$category_input_name;
                 $category->save();
-                $user=Auth::user();
                 $category->users()->attach($user->id);
-                
+  
             } else {
                 
-                $category = $categories[0];
+                // ある場合 
+                $category = Category::where('name',$category_input_name)->first();
                 
+                // 中間テーブルにあるか
+                if(DB::table('category_user')->where('category_id', $category->id)->where('user_id',$user->id)->doesntExist() ) {
+                    // ない
+                    $category->users()->attach($user->id);
+                    // $category = Category::where('name',$category_input_name)->first();
+                } 
+                // $category = Category::where('name', $category_input_name)->first();
             }
+            $category_id = $category->id;
         } 
-        
         
         $input = $request['series'];
-        if($request['series_input_name'] == null ) { 
-            $series_select_name = $request['series_select_name'];
-            $series = Series::where('name', $series_select_name)->first();
-        } else {
-            $series_input_name = $request['series_input_name'];
-            $series_list=Auth::user()->series()->get();
-            $flg=true;
         
-            foreach($series_list as $test_series) {
-            if($test_series->name === $series_input_name) {
-                
-                $flg=false;
-                break;
-            }    
-            }
+        // 入力欄にキーワードがあるか
+        if($request['series_input_name'] == null ) { 
+            // セレクトからデータ受け取り
+            $series_id = $request['series_select_name'];
+            // $series = series::where('name', $series_select_name)->first();
             
-            if($flg) {
+        } else {
+            // キーワードある場合
+            $series_input_name = $request['series_input_name'];
+            
+            
+            // カテゴリーテーブルにあるか
+            if( DB::table('series')->where('name', $series_input_name)->doesntExist()) {
+                // ない場合
                 $series->name =$series_input_name;
                 $series->save();
-                $user=Auth::user();
                 $series->users()->attach($user->id);
-                
+  
             } else {
                 
-                $series = $series_list[0];
+                // ある場合 
+                $series = series::where('name',$series_input_name)->first();
                 
+                // 中間テーブルにあるか
+                if(DB::table('series_user')->where('series_id', $series->id)->where('user_id',$user->id)->doesntExist() ) {
+                    // ない
+                    $series->users()->attach($user->id);
+                    // $series = series::where('name',$series_input_name)->first();
+                } 
+                // $series = series::where('name', $series_input_name)->first();
             }
+            $series_id = $series->id;
         } 
-        
-        // $book->bookshelf_id = $bookshelf->id;
-        // $book->category_id = $category->id;
-        // $book->series_id = $series->id;
-        // $input = $request['book'];
-        // $book->fill($input)->save();
-        // return redirect('/books/' . $book->id);
         
         $input = $request['book'];
         $front_cover_image_path = Cloudinary::upload($request->file('front_cover_image_path')->getRealPath())->getSecurePath();
         $input += ['front_cover_image_path' => $front_cover_image_path];
         $input['user_id'] = Auth::id();
         $input += ['bookshelf_id' => $bookshelf_id];
-        $input['category_id'] = $category->id;
-        $input['series_id'] = $series->id;
+        $input['category_id'] = $category_id;
+        $input['series_id'] = $series_id;
         $book->fill($input)->save();
         return redirect('/books/' . $book->id); 
     }
@@ -311,7 +331,7 @@ class BookController extends Controller
         //     Category::where('id',$category_id)->de
         // }
         // dd(Book::where('category_id', $category_id)->exists());
-        return redirect('/');
+        return redirect('/books/bookps');
     }
 
 }
