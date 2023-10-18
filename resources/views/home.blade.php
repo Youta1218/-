@@ -53,10 +53,11 @@
     <!--//* 検索機能ここまで *//-->
 
     <table class="mt-8 mx-auto p-12 bg-white shadow-sm sm:rounded-lg">
+        
         <tr>
-            <th>本タイトル</th>
-            <th>シリーズ</th>
-            <th>カテゴリー</th>
+            <th class='p-2 px-10'>本タイトル</th>
+            <th class='p-2 px-10'>シリーズ</th>
+            <th class='p-2 px-10'>カテゴリー</th>
         </tr>
         <div class='py-2'>
             @foreach ($books as $book)

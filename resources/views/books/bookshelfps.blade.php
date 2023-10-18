@@ -16,4 +16,5 @@
                 @endforeach    
             </div>
         </div>    
+        {{ $bookshelves->links() }}
 </x-app-layout>

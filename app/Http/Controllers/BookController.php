@@ -80,6 +80,7 @@ class BookController extends Controller
         $books=Book::where('user_id', $user_id)->get();
         
         $unique_bookshelves=Auth::user()->bookshelves()->get();
+        // dd($unique_bookshelves);
        
         $categories=Auth::user()->categories()->get();
         
