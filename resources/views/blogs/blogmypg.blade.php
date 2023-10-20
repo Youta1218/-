@@ -15,6 +15,22 @@
     
                     <h3></h3> 
                     <p class='author'><作者>{{ $blog->author }}</p>
+                    @auth
+                    <!-- Post.phpに作ったisLikedByメソッドをここで使用 -->
+                    @if (!$blog->isLikedBy(Auth::user()))
+                        <span class="likes flex　justify-center">
+                            いいね
+                            <i class="fas fa-heart like-toggle" data-blog-id="{{ $blog->id }}"></i>
+                        <span class="like-counter">{{$blog->blog_likes_count}}</span>
+                        </span><!-- /.likes -->
+                    @else
+                        <span class="likes">
+                            いいね
+                            <i class="fas fa-heart heart like-toggle liked" data-blog-id="{{ $blog->id }}"></i>
+                        <span class="like-counter">{{$blog->blog_likes_count}}</span>
+                        </span><!-- /.likes -->
+                    @endif
+                    @endauth
             </div>    
             @endforeach
         </div>    

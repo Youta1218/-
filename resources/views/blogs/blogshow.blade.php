@@ -12,8 +12,23 @@
                         <h3><表紙></h3>
                         <img class='h-48 border-8 border-indigo-600' src="{{ $blog->front_cover_image_path }}" alt="画像が読み込めません。"/>
                     </div>
+                    @auth
+                    <!-- Post.phpに作ったisLikedByメソッドをここで使用 -->
+                    @if (!$blog->isLikedBy(Auth::user()))
+                        <span class="likes flex　justify-center">
+                            いいね
+                            <i class="fas fa-heart like-toggle" data-blog-id="{{ $blog->id }}"></i>
+                        <span class="like-counter">{{$blog->blog_likes_count}}</span>
+                        </span><!-- /.likes -->
+                    @else
+                        <span class="likes">
+                            いいね
+                            <i class="fas fa-heart heart like-toggle liked" data-blog-id="{{ $blog->id }}"></i>
+                        <span class="like-counter">{{$blog->blog_likes_count}}</span>
+                        </span><!-- /.likes -->
+                    @endif
+                    @endauth
                 </div>
-                
             </div>
             <div class='my-auto'>
                 <div class=''>

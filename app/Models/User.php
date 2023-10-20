@@ -63,5 +63,27 @@ class User extends Authenticatable
         return $this->hasMany(Bookshelf::class);  
     }
     
+    // 実装1
+    public function blog()
+    {
+        return $this->belongsTo(Blog::class);
+    }
+    
+    // 実装2
+    public function blog_likes()
+    {
+        return $this->hasMany(BlogLike::class);
+    }
+    // 実装1
+    public function book()
+    {
+        return $this->belongsTo(Book::class);
+    }
+    
+    // 実装2
+    public function book_likes()
+    {
+        return $this->hasMany(BookLike::class);
+    }
     
 }

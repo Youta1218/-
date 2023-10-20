@@ -7,9 +7,11 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Series;
 use App\Http\Requests\BlogpsRequest;
-use Auth;
+//use Auth;
 use Cloudinary;
 use Illuminate\Support\Facades\DB;
+use App\Models\BlogLike;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -17,19 +19,25 @@ class BlogController extends Controller
 
     {
         $user_id=Auth::user()->id;
-    return view('blogs.blogmypg')->with(['blogs' => $blog->where('user_id',$user_id)->orderBy('updated_at','DESC')->paginate(6)]);
+    return view('blogs.blogmypg')->with(['blogs' => $blog->where('user_id',$user_id)->orderBy('updated_at','DESC')->withCount('blog_likes')->paginate(6)]);
     //$blogの中身を戻り値にする。
     }
     
     public function blogps(Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
 
     {
-    return view('blogs.blogps')->with(['blogs' => $blog->getPaginateByLimit()]);
+        $user = auth()->user();
+        $blogs = Blog::withCount('blog_likes')->orderBy('updated_at', 'DESC')->paginate(6);
+        
+    return view('blogs.blogps')->with(['blogs' => $blogs]);
     //$blogの中身を戻り値にする。
     }
+    
     public function blogshow(Blog $blog)
     {
-        return view('blogs.blogshow')->with(['blog' => $blog]);    
+        $blogs = Blog::withCount('blog_likes');
+        
+        return view('blogs.blogshow')->with(['blog' => $blog, 'blogs'=>$blogs]);    
     }
     public function blogct(Blog $blog, Category $category,Series $series)
     {
@@ -215,6 +223,37 @@ class BlogController extends Controller
         
         return redirect('/blogs/' . $blog->id);
     }
+    
+    public function blog_like(Request $request)
+{
+    // dd($request);
+    $user_id = Auth::user()->id; // ログインしているユーザーのidを取得
+    $blog_id = $request->blog_id; // 投稿のidを取得
+    
+    // すでにいいねがされているか判定するためにlikesテーブルから1件取得
+    $already_liked = BlogLike::where('user_id', $user_id)->where('blog_id', $blog_id)->first(); 
+    
+    if (!$already_liked) { 
+        $like = new BlogLike; // Likeクラスのインスタンスを作成
+        // $like = save();
+        // $blog->users()->attach($user_id);
+        $like->blog_id = $blog_id;
+        $like->user_id = $user_id;
+        $like->save();
+        // $like->fill(['blog_id'=>$blog_id, 'user_id'=>$user_id])->save();
+     } else {
+        // 既にいいねしてたらdelete 
+        BlogLike::where('blog_id', $blog_id)->where('user_id', $user_id)->delete();
+    }
+    // 投稿のいいね数を取得
+    $blog_likes_count = Blog::withCount('blog_likes')->findOrFail($blog_id)->blog_likes_count;
+    $param = [
+        'blog_likes_count' => $blog_likes_count,
+    ];
+    //  $param = ['blog_likes_count'=>$like->user_id];
+    return response()->json($param); // JSONデータをjQueryに返す
+}
+    
     public function blogdelete(Blog $blog)
     {
         $blog->delete();
