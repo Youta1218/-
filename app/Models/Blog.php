@@ -37,4 +37,12 @@ class Blog extends Model
     {
         return $this->belongsTo(Series::class);
     }
+    public function blog_likes()
+    {
+        return $this->hasMany('App\Models\BlogLike');
+    }
+    // Viewで使う、いいねされているかを判定するメソッド。
+    public function isLikedBy($user): bool {
+        return BlogLike::where('user_id', $user->id)->where('blog_id', $this->id)->first() !==null;
+    }
 }

@@ -18,17 +18,20 @@
                     <x-nav-link :href="route('HOME')" :active="request()->routeIs('HOME')">
                         {{ __('HOME') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('お気に入り')" :active="request()->routeIs('お気に入り')">
+                        {{ __('お気に入り') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('ALL')" :active="request()->routeIs('ALL')">
                         {{ __('ALL') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('カテゴリー一覧')" :active="request()->routeIs('カテゴリー一覧')">
-                        {{ __('カテゴリー一覧') }}
+                    <x-nav-link :href="route('カテゴリー')" :active="request()->routeIs('カテゴリー')">
+                        {{ __('カテゴリー') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('シリーズ一覧')" :active="request()->routeIs('シリーズ一覧')">
-                        {{ __('シリーズ一覧') }}
+                    <x-nav-link :href="route('シリーズ')" :active="request()->routeIs('シリーズ')">
+                        {{ __('シリーズ') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('本棚一覧')" :active="request()->routeIs('本棚一覧')">
-                        {{ __('本棚一覧') }}
+                    <x-nav-link :href="route('本棚')" :active="request()->routeIs('本棚')">
+                        {{ __('本棚') }}
                     </x-nav-link>
                     <x-nav-link :href="route('MY BLOG')" :active="request()->routeIs('MY BLOG')">
                         {{ __('MY BLOG') }}

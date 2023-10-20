@@ -44,4 +44,13 @@ class Book extends Model
     {
         return $this->belongsTo(Series::class);
     }
+    public function book_likes()
+    {
+        return $this->hasMany('App\Models\BookLike');
+    }
+    // Viewで使う、いいねされているかを判定するメソッド。
+    public function isLikedBy($user): bool {
+        return BookLike::where('user_id', $user->id)->where('book_id', $this->id)->first() !==null;
+    }
+    
 }

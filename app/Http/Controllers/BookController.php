@@ -9,9 +9,12 @@ use App\Models\Category;
 use App\Models\Series;
 use App\Models\User;
 use App\Http\Requests\BookpsRequest;
-use Auth;
 use Cloudinary;
 use Illuminate\Support\Facades\DB;
+use App\Models\BookLike;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class BookController extends Controller
 {
@@ -59,6 +62,23 @@ class BookController extends Controller
         return view('home', compact('books', 'keyword', 'series', 'category', 'series_list', 'categories_list'));
        
     }
+    public function booklike(Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
+    {
+        $user_id=Auth::user()->id;
+        $booklikes=Auth::user()->book_likes()->get();
+        $books=collect();
+        foreach ($booklikes as $booklike) {
+            $books->push($booklike->book);
+        }
+        // $options = [
+        //     'path'=> '/books/booklike'
+        //     ];
+        // $page= Paginator::resolveCurrentPath();    
+        //$likepaginate = new LengthAwarePaginator($books->sortBy('title')->forPage($page,6),$books->count(),6,$page,$options);
+
+        // dd($likepaginate);
+        return view('books.booklike')->with(['books' => $books]);//$bookの中身を戻り値にする。
+    }
 
     public function bookps(Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
     {
@@ -69,7 +89,8 @@ class BookController extends Controller
     public function bookshow(Book $book)
     {
         $this->authorize('view', $book);
-        return view('books.bookshow')->with(['book' => $book]);    
+        $books = Book::withCount('book_likes');
+        return view('books.bookshow')->with(['book' => $book, 'books'=>$books]);    
     }
     
     public function bookct(Book $book, Bookshelf $bookshelf,Category $category,Series $series)
@@ -322,6 +343,37 @@ class BookController extends Controller
         $book->fill($input)->save();
         return redirect('/books/' . $book->id); 
     }
+    
+     public function book_like(Request $request)
+{
+    // dd($request);
+    $user_id = Auth::user()->id; // ログインしているユーザーのidを取得
+    $book_id = $request->book_id; // 投稿のidを取得
+    
+    // すでにいいねがされているか判定するためにlikesテーブルから1件取得
+    $already_liked = BookLike::where('user_id', $user_id)->where('book_id', $book_id)->first(); 
+    
+    if (!$already_liked) { 
+        $like = new BookLike; // Likeクラスのインスタンスを作成
+        // $like = save();
+        // $blog->users()->attach($user_id);
+        $like->book_id = $book_id;
+        $like->user_id = $user_id;
+        $like->save();
+        // $like->fill(['blog_id'=>$blog_id, 'user_id'=>$user_id])->save();
+     } else {
+        // 既にいいねしてたらdelete 
+        BookLike::where('book_id', $book_id)->where('user_id', $user_id)->delete();
+    }
+    // 投稿のいいね数を取得
+    $book_likes_count = Book::withCount('book_likes')->findOrFail($book_id)->book_likes_count;
+    $param = [
+        'book_likes_count' => $book_likes_count,
+    ];
+    //  $param = ['blog_likes_count'=>$like->user_id];
+    return response()->json($param); // JSONデータをjQueryに返す
+}
+    
     public function bookdelete(Book $book)
     {
         //$category=Category::find($book->category_id);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Bookshelf extends Model
 {
@@ -28,5 +29,9 @@ class Bookshelf extends Model
     public function getByBookshelf(int $limit_count = 10)
     {
          return $this->books()->with('bookshelf')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+    }
+    public function getBookCount()
+    {
+        return $this->books()->where('user_id',Auth::id())->count();
     }
 }
