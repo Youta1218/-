@@ -39,6 +39,13 @@ class BlogController extends Controller
         
         return view('blogs.blogshow')->with(['blog' => $blog, 'blogs'=>$blogs]);    
     }
+    
+    public function blogctedit(Blog $blog)
+    {
+        
+        return view('blogs.blogcteditshow')->with(['blog' => $blog]);    
+    }
+    
     public function blogct(Blog $blog, Category $category,Series $series)
     {
         $user_id=Auth::id();
@@ -132,7 +139,7 @@ class BlogController extends Controller
         $input['category_id'] = $category_id;
         $input['series_id'] = $series_id;
         $blog->fill($input)->save();
-        return redirect('/blogs/' . $blog->id);
+        return redirect('/blogs/ctedit/' . $blog->id);
     }
     public function blogedit(Blog $blog,Category $category,Series $series)
     {
@@ -221,7 +228,7 @@ class BlogController extends Controller
         $input['series_id'] = $series_id;
         $blog->fill($input)->save();
         
-        return redirect('/blogs/' . $blog->id);
+        return redirect('/blogs/ctedit/' . $blog->id);
     }
     
     public function blog_like(Request $request)

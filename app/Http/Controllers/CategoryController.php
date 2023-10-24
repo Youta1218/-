@@ -11,16 +11,35 @@ use Auth;
 
 class CategoryController extends Controller
 {
-    public function category(Category $category)
+    public function category(Request $request,Category $category)
     {
-        
-        $user_books = $category->books()->where('user_id', Auth::id())->orderBy('title', 'ASC')->paginate(6);
-        // dd($category->books()->where('user_id', Auth::id())->get());
-        // foreach ($books as $book) {
-        //     $user_books += [$book->where('user_id', Auth::id())->first()];
-            
-        // }
-        //$this->authorize('view', $user_books->first());
+        $user_id=Auth::user()->id;
+        $select = $request->orderNum;
+        if(isset($select)) {
+            switch($select) {
+                case 1:
+                    $sort='created_at';
+                    $order='ASC';
+                    break;
+                case 2:
+                    $sort='created_at';
+                    $order='DESC';
+                    break;
+                case 3:
+                    $sort='title';
+                    $order='ASC';
+                    break;
+                case 4:
+                    $sort='title';
+                    $order='DESC';
+                    break;    
+            } 
+        } else {
+            $sort='created_at';
+            $order='ASC';
+        }
+        $user_books = $category->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
+
     return view('books.category')->with(['books' => $user_books, 'category'=>$category]);
     }   
     public function categoryps (Category $category)

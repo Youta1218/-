@@ -12,9 +12,34 @@ use Cloudinary;
 
 class BookshelfController extends Controller
 {
-    public function bookshelf(Bookshelf $bookshelf)
+    public function bookshelf(Request $request,Bookshelf $bookshelf)
     {
-        $books=$bookshelf->books()->where('user_id', Auth::id())->orderBy('title', 'ASC')->paginate(6);
+         $user_id=Auth::user()->id;
+        $select = $request->orderNum;
+        if(isset($select)) {
+            switch($select) {
+                case 1:
+                    $sort='created_at';
+                    $order='ASC';
+                    break;
+                case 2:
+                    $sort='created_at';
+                    $order='DESC';
+                    break;
+                case 3:
+                    $sort='title';
+                    $order='ASC';
+                    break;
+                case 4:
+                    $sort='title';
+                    $order='DESC';
+                    break;    
+            } 
+        } else {
+            $sort='created_at';
+            $order='ASC';
+        }
+        $books=$bookshelf->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         //$this->authorize('view', $books->first());
     return view('books.bookshelf')->with(['books' => $books , 'bookshelf'=>$bookshelf]);
     }   

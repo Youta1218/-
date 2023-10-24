@@ -16,6 +16,6 @@
             @endforeach
         </div>   
         <div class='text-center'>
-        {{--{{ $books->links() }}--}}
+        {{ $books->links() }}
         </div>    
 </x-app-layout>
