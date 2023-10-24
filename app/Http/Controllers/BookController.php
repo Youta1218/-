@@ -70,20 +70,49 @@ class BookController extends Controller
         foreach ($booklikes as $booklike) {
             $books->push($booklike->book);
         }
-        // $options = [
-        //     'path'=> '/books/booklike'
-        //     ];
-        // $page= Paginator::resolveCurrentPath();    
-        //$likepaginate = new LengthAwarePaginator($books->sortBy('title')->forPage($page,6),$books->count(),6,$page,$options);
-
-        // dd($likepaginate);
-        return view('books.booklike')->with(['books' => $books]);//$bookの中身を戻り値にする。
+        
+        $perPage = 6;   // 1ページごとの表示件数
+        $page = Paginator::resolveCurrentPage('page');
+        $pageData = $books->slice(($page - 1) * $perPage, $perPage);
+        $options = [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => 'page'
+        ];
+        $paginatedBooks = new LengthAwarePaginator($pageData, $books->count(), $perPage, $page, $options);   
+        
+        return view('books.booklike')->with(['books' => $paginatedBooks]);//$bookの中身を戻り値にする。
     }
 
-    public function bookps(Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
+    public function bookps(Request $request,Book $book)//インポートしたBookをインスタンス化して$bookとして使用。
     {
         $user_id=Auth::user()->id;
-        return view('books.bookps')->with(['books' => $book->getPaginateByLimit($user_id)]);//$bookの中身を戻り値にする。
+        $select = $request->orderNum;
+        if(isset($select)) {
+            switch($select) {
+                case 1:
+                    $sort='created_at';
+                    $order='ASC';
+                    break;
+                case 2:
+                    $sort='created_at';
+                    $order='DESC';
+                    break;
+                case 3:
+                    $sort='title';
+                    $order='ASC';
+                    break;
+                case 4:
+                    $sort='title';
+                    $order='DESC';
+                    break;    
+            } 
+        } else {
+            $sort='created_at';
+            $order='ASC';
+        }
+        
+        $books = $book->orderBy($sort,$order)->where('user_id', $user_id)->paginate(6);
+        return view('books.bookps')->with(['books' => $books]);//$bookの中身を戻り値にする。
     }//
      
     public function bookshow(Book $book)
@@ -91,6 +120,12 @@ class BookController extends Controller
         $this->authorize('view', $book);
         $books = Book::withCount('book_likes');
         return view('books.bookshow')->with(['book' => $book, 'books'=>$books]);    
+    }
+    
+    public function bookcteditshow(Book $book)
+    {
+        $this->authorize('view', $book);
+        return view('books.bookcteditshow')->with(['book' => $book]);    
     }
     
     public function bookct(Book $book, Bookshelf $bookshelf,Category $category,Series $series)
@@ -217,7 +252,7 @@ class BookController extends Controller
         $input['category_id'] = $category_id;
         $input['series_id'] = $series_id;
         $book->fill($input)->save();
-        return redirect('/books/' . $book->id);    
+        return redirect('/books/ctedit/' . $book->id);    
         
     }
     public function bookedit(Book $book,Bookshelf $bookshelf,Category $category,Series $series)
@@ -341,7 +376,7 @@ class BookController extends Controller
         $input['category_id'] = $category_id;
         $input['series_id'] = $series_id;
         $book->fill($input)->save();
-        return redirect('/books/' . $book->id); 
+        return redirect('/books/ctedit/' . $book->id); 
     }
     
      public function book_like(Request $request)

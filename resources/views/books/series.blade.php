@@ -2,6 +2,13 @@
     <x-slot name="header">
         <p class=daimei>{{ $series->name }}</p>
     </x-slot>
+    <form class='mt-8 mb-2 flex justify-center items-center' action="/series/{{$series->id}}" method="GET">
+        <select name='orderNum'>
+            <option value=1>作成日時（新しい順）</option>
+            <option value=2>作成日時（古い順）</option>
+        </select>
+          <input type="submit" class='bg-indigo-700 text-white m-2 py-2 px-4 rounded' value="並び替える">
+    </form>    
     <div class='my-8 grid grid-cols-3 content-stretch place-self-stretch'>
         @foreach($books as $book)
             <div class='gap-4 mb-8 m-auto'>

@@ -14,7 +14,7 @@ class Book extends Model
 
     {
     // updated_atで降順に並べたあと、limitで件数制限をかける
-        return $this->where('user_id', $user_id)->orderBy('title')->paginate($limit_count);
+        return $this->where('user_id', $user_id)->paginate($limit_count);
     }
 
     protected $fillable = [

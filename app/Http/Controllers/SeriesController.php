@@ -12,9 +12,26 @@ use Auth;
 
 class SeriesController extends Controller
 {
-    public function series(Series $series)
+    public function series(Request $request,Series $series)
     {
-        $user_books = $series->books()->where('user_id', Auth::id())->orderBy('title', 'ASC')->paginate(6);
+        $user_id=Auth::user()->id;
+        $select = $request->orderNum;
+        if(isset($select)) {
+            switch($select) {
+                case 1:
+                    $sort='created_at';
+                    $order='ASC';
+                    break;
+                case 2:
+                    $sort='created_at';
+                    $order='DESC';
+                    break;
+            } 
+        } else {
+            $sort='created_at';
+            $order='ASC';
+        }
+        $user_books = $series->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         
     return view('books.series')->with(['books' => $user_books, 'series'=>$series]);
     }   

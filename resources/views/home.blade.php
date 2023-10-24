@@ -41,12 +41,7 @@
                     </div>
                     </label>
                 </div>
-
-                <div>
-                    <button class='bg-indigo-700 text-white my-2 py-1 px-4 rounded'>
-                    <input type="submit" class="btn" value="検索">
-                    </button>
-                </div>
+                <input type="submit" class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' value="検索">
             </div>
         </form>
     </div>

@@ -19,24 +19,6 @@
                         <p class='category'><カテゴリー名>{{ $book->category->name }}</p>
                         <!--<h3>シリーズ名</h3>-->
                         <p class='series'><シリーズ名>{{ $book->series->name }}</p>
-                        
-                        @auth
-                        <!-- Post.phpに作ったisLikedByメソッドをここで使用 -->
-                        @if (!$book->isLikedBy(Auth::user()))
-                            <span class="likes flex　justify-center">
-                                お気に入り
-                                <i class="fas fa-heart book-like-toggle" data-book-id="{{ $book->id }}"></i>
-                            {{--<span class="like-counter">{{$book->book_likes_count}}</span>--}}
-                            </span><!-- /.likes -->
-                        @else
-                            <span class="likes">
-                                お気に入り
-                                <i class="fas fa-heart heart book-like-toggle liked" data-book-id="{{ $book->id }}"></i>
-                            {{--<span class="like-counter">{{$book->book_likes_count}}</span>--}}
-                            </span><!-- /.likes -->
-                        @endif
-                        @endauth
-                            
                     </div>
                 </div>    
                 <div class='my-auto'>
@@ -53,14 +35,16 @@
                 </div>    
             </div>
             <div class='flex justify-center items-center'>
-                <a class='block bg-indigo-700 text-white m-2 py-1 px-4 rounded' href="/books/{{ $book->id }}/bookedit">[本情報編集]</a>
-                <form action="/books/{{ $book->id }}" id="form_{{ $book->id }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button class='bg-indigo-700 text-white m-2 py-1 px-4 rounded' type="button" onclick="bookdeletePost({{$book->id}})">[削除]</button>
-                </form>
-                <button class='bg-indigo-700 text-white m-2 py-1 px-4 rounded' type="button" onclick="history.back()">[戻る]</button>
-                <a class='block bg-indigo-700 text-white m-2 py-1 px-4 rounded' href="/">[home]</a>
+                <div class='p-12 ml-40'>
+                    <form action="/books/{{ $book->id }}" id="form_{{ $book->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' type="button" onclick="bookdeletePost({{$book->id}})">[削除]</button>
+                    </form>
+                </div>
+                <div class='p-12 mr-40'>
+                    <a class='bg-indigo-700 text-white my-2 py-1 px-4 rounded' href="/">[home]</a>
+                </div>
             </div> 
         </div>    
     
