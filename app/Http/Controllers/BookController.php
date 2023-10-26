@@ -162,12 +162,13 @@ class BookController extends Controller
                 $input += ['bookshelf_image_path' => $bookshelf_image_path];
                 $input += ['user_id' => Auth::id()];
                 $bookshelf->fill($input)->save(); 
+                $bookshelf_id = $bookshelf -> latest('id')->first()->id;
                 // $bookshelf->save();
                 
             } else {
                 $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->where('user_id',Auth::id())->first();
+                $bookshelf_id = $bookshelf->id;
             }
-            $bookshelf_id = $bookshelf -> latest('id')->first()->id;
         } 
         
         $input = $request['category'];
@@ -261,7 +262,7 @@ class BookController extends Controller
         $books=Book::where('user_id', $user_id)->get();
         
         $unique_bookshelves=Auth::user()->bookshelves()->get();
-        
+        //dd($unique_bookshelves);
         $categories=Auth::user()->categories()->get();
         
         $series=Auth::user()->series()->get();
@@ -287,12 +288,13 @@ class BookController extends Controller
                 $input += ['bookshelf_image_path' => $bookshelf_image_path];
                 $input += ['user_id' => Auth::id()];
                 $bookshelf->fill($input)->save(); 
+                $bookshelf_id = $bookshelf -> latest('id')->first()->id;
                 // $bookshelf->save();
                 
             } else {
                 $bookshelf = Bookshelf::where('name', $bookshelf_input_name)->where('user_id',Auth::id())->first();
+                $bookshelf_id = $bookshelf->id;
             }
-            $bookshelf_id = $bookshelf -> latest('id')->first()->id;
         } 
         
         $input = $request['category'];
