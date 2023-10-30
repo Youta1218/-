@@ -23,13 +23,32 @@ class BlogController extends Controller
     //$blogの中身を戻り値にする。
     }
     
-    public function blogps(Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
+    public function blogps(Request $request,Blog $blog)//インポートしたBlogをインスタンス化して$blogとして使用。
 
     {
         $user = auth()->user();
-        $blogs = Blog::withCount('blog_likes')->orderBy('updated_at', 'DESC')->paginate(6);
         
-    return view('blogs.blogps')->with(['blogs' => $blogs]);
+        $series = $request->input('series');
+        $category = $request->input('category');
+        $keyword = $request->input('keyword');
+        $query = Blog::query();
+       
+        
+        if(!empty($keyword)) {
+            // またはの検索
+           $query->where("book_title", 'LIKE', "%{$keyword}%")
+            ->orWhere("author", 'LIKE', "%{$keyword}%")
+            // リレーションがある場合はorWhwereHas
+            ->orWhereHas("category", function ($q) use ($keyword) {
+                $q->where("name", 'LIKE', "%{$keyword}%");
+            })
+            ->orWhereHas("series", function ($q) use ($keyword) {
+                $q->where("name", 'LIKE', "%{$keyword}%");
+            });  
+        }
+        $blogs = $query->withCount('blog_likes')->orderBy('updated_at', 'DESC')->paginate(6);
+        // dd($blogs);
+    return view('blogs.blogps', compact('blogs', 'keyword'))->with(['blogs' => $blogs]);
     //$blogの中身を戻り値にする。
     }
     
