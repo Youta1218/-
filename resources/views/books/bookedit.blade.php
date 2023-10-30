@@ -27,7 +27,7 @@
                     <input type='text' name='category_input_name' value="{{ $book->category->name }}">
                     <select name="category_select_name">
                         @foreach($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                     <div class='text-red-600'>
@@ -38,7 +38,7 @@
                     <input type='text' name='series_input_name' value="{{ $book->series->name }}">
                     <select name="series_select_name">
                         @foreach($series_list as $series)
-                            <option value="{{ $series->name }}">{{ $series->name }}</option>
+                            <option value="{{ $series->id }}">{{ $series->name }}</option>
                         @endforeach
                     </select>
                     <div class='text-red-600'>

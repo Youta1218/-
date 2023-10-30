@@ -25,16 +25,7 @@ class BookController extends Controller
         $series = $request->input('series');
         $category = $request->input('category');
         $keyword = $request->input('keyword');
-        // dd($category,$series);
         $query = Book::query();
-        // テーブル結合
-        // $query->leftJoin('series', function ($query) use ($request) {
-        //     $query->on('books.series_id', '=', 'series.id');
-        //     })->leftJoin('categories', function ($query) use ($request) {
-        //     $query->on('books.category_id', '=', 'categories.id');
-        //     });
-        // $query->leftJoin('series', 'books.series_id', '=', 'series.id');
-        //->leftJoin('categories','books.category_id', '=', 'categories.id');
         if(!empty($series)) {
             $query->whereHas('series', function ($q) use ($series) {
                 $q->where('name', 'LIKE', $series);
