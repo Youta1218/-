@@ -82,11 +82,11 @@ class BookController extends Controller
             switch($select) {
                 case 1:
                     $sort='created_at';
-                    $order='ASC';
+                    $order='DESC';
                     break;
                 case 2:
                     $sort='created_at';
-                    $order='DESC';
+                    $order='ASC';
                     break;
                 case 3:
                     $sort='title';
@@ -99,7 +99,7 @@ class BookController extends Controller
             } 
         } else {
             $sort='created_at';
-            $order='ASC';
+            $order='DESC';
         }
         
         $books = $book->orderBy($sort,$order)->where('user_id', $user_id)->paginate(6);
