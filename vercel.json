@@ -9,8 +9,7 @@
             "src": "public/**",
             "use": "vercel-php@0.6.0"
         },
-        { "src": "package.json", "use": "@vercel/static-build" },
-        { "src": "migrate.php", "use": "vercel-php@0.6.0" }
+        { "src": "package.json", "use": "@vercel/static-build" }
     ],
     "routes": [
         {
@@ -35,7 +34,6 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp"
-    },
-    "buildCommand":"vite build",
-    "installCommand": "npm install"
+    }
+
 }
