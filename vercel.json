@@ -34,6 +34,6 @@
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp"
     },
-    "buildCommand":"npm run build",
+    "buildCommand":"vite build",
     "installCommand": "npm install"
 }
