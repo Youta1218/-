@@ -20,16 +20,16 @@ class SeriesController extends Controller
             switch($select) {
                 case 1:
                     $sort='created_at';
-                    $order='ASC';
+                    $order='DESC';
                     break;
                 case 2:
                     $sort='created_at';
-                    $order='DESC';
+                    $order='ASC';
                     break;
             } 
         } else {
             $sort='created_at';
-            $order='ASC';
+            $order='DESC';
         }
         $user_books = $series->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         
