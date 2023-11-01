@@ -12,9 +12,12 @@
 # 機能一覧
 
 ### 注力した・頑張った機能
-# テストアカウント
+# URL・テストアカウント
+### URL
+- [MyLibrary](https://mylibrary-1r57incni-yota-yamamotos-projects.vercel.app)
+### テストアカウント
 1. e-mail: test@user1.com
    pas: 12345678
 2. e-mail: test@user2.com
    pas: 12345678
-※ユーザーごとの制限を見てもらうために２つアカウントを   
+#### ※ユーザーごとの制限を見てもらうために２つアカウントを用意している。   
