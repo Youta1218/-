@@ -19,11 +19,11 @@ class CategoryController extends Controller
             switch($select) {
                 case 1:
                     $sort='created_at';
-                    $order='ASC';
+                    $order='DESC';
                     break;
                 case 2:
                     $sort='created_at';
-                    $order='DESC';
+                    $order='ASC';
                     break;
                 case 3:
                     $sort='title';
@@ -36,7 +36,7 @@ class CategoryController extends Controller
             } 
         } else {
             $sort='created_at';
-            $order='ASC';
+            $order='DESC';
         }
         $user_books = $category->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
 
