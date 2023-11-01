@@ -30,5 +30,5 @@
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp"
     },
-    "buildCommand":"build"
+    "buildCommand":"npm run build"
 }
