@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use DB;
+use Str;
 
 class AppServiceProvider extends ServiceProvider
 {
