@@ -103,7 +103,7 @@ class BookController extends Controller
         }
         
         $books = $book->orderBy($sort,$order)->where('user_id', $user_id)->paginate(6);
-        return view('books.bookps')->with(['books' => $books,'orderNum' => $orderNum]);//$bookの中身を戻り値にする。
+        return view('books.bookps')->with(['books' => $books,'orderNum' => $select]);//$bookの中身を戻り値にする。
     }//
      
     public function bookshow(Book $book)
