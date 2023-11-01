@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        DB::beforeExecuting(function ($query) {
+            if (Str::startsWith($query, ['insert', 'update'])) {
+                return Str::replaceArray('?', ['\\N'], $query);
+            }
+            return $query; 
+        });
     }
 
     /**
@@ -26,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
       \URL::forceScheme('https');  //
       $this->app['request']->server->set('HTTPS','on');
-      Schema::defaultStringLength(191);
+      
     //   Paginator::useBootstrap();
     }
 }
