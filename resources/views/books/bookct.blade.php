@@ -39,7 +39,7 @@
                         @endforeach
                     </select>
                     <div class='text-red-600'>
-                        <h4>・カテゴリーとシリーズについて</h4>
+                        <h4>■カテゴリー・シリーズ・本棚について</h4>
                         <p>※選択欄にデータが無い場合はデータを追加する必要があります。</p>
                         <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
                         <p>　選択欄のデータを選択した扱いと同じになります。</p>
@@ -65,12 +65,6 @@
                             <h4>本の場所</h4> 
                             <input type=text name="book[place]" placeholder="本の場所">
                             <p class="place__error" style="color:red">{{ $errors->first('book.place') }}</p>
-                        </div>
-                        <div class='text-red-600'>
-                            <h4>・本棚</h4>
-                            <p>※選択欄にデータが無い場合はデータを追加する必要があります。</p>
-                            <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
-                            <p>　選択欄のデータを選択した扱いと同じになります。</p>
                         </div> 
                         <div class='text-red-600'>
                             <h4>・本棚の写真</h4>
