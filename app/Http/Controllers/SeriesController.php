@@ -26,6 +26,14 @@ class SeriesController extends Controller
                     $sort='created_at';
                     $order='ASC';
                     break;
+                case 3:
+                    $sort='title';
+                    $order='ASC';
+                    break;
+                case 4:
+                    $sort='title';
+                    $order='DESC';
+                    break;      
             } 
         } else {
             $sort='created_at';

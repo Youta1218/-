@@ -4,8 +4,11 @@
     </x-slot>
     <form class='mt-8 mb-2 flex justify-center items-center' action="/series/{{$series->id}}" method="GET">
         <select name='orderNum'>
-            <option value=1>作成日時（新しい順）</option>
-            <option value=2>作成日時（古い順）</option>
+            <option value=1 @if($orderNum==1 ) selected @endif>作成日時（新しい順）</option>
+            <option value=2 @if($orderNum==2 ) selected @endif>作成日時（古い順）</option>
+            <option value=3 @if($orderNum==3 ) selected @endif>巻数（１～最新巻）</option>
+            <option value=4 @if($orderNum==4 ) selected @endif>巻数（最新巻～１）</option>
+            
         </select>
           <input type="submit" class='bg-indigo-700 text-white m-2 py-2 px-4 rounded' value="並び替える">
     </form>    
