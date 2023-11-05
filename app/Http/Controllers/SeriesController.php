@@ -41,7 +41,7 @@ class SeriesController extends Controller
         }
         $user_books = $series->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         
-    return view('books.series')->with(['books' => $user_books, 'series'=>$series]);
+    return view('books.series')->with(['books' => $user_books, 'series'=>$series,'orderNum' => $select]);
     }   
     public function seriesps (Series $series)
     {

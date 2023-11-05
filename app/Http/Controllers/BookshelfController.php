@@ -41,7 +41,7 @@ class BookshelfController extends Controller
         }
         $books=$bookshelf->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         //$this->authorize('view', $books->first());
-    return view('books.bookshelf')->with(['books' => $books , 'bookshelf'=>$bookshelf]);
+    return view('books.bookshelf')->with(['books' => $books , 'bookshelf'=>$bookshelf,'orderNum' => $select]);
     }   
     public function bookshelfps (Bookshelf $bookshelf)
     {

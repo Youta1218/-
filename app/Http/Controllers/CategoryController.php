@@ -40,7 +40,7 @@ class CategoryController extends Controller
         }
         $user_books = $category->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
 
-    return view('books.category')->with(['books' => $user_books, 'category'=>$category]);
+    return view('books.category')->with(['books' => $user_books, 'category'=>$category,'orderNum' => $select]);
     }   
     public function categoryps (Category $category)
     {
