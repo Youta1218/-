@@ -31,11 +31,6 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
-                    <div class='text-red-600'>
-                        <p>※最初は必ずカテゴリー名を選択する必要があります。</p>
-                        <p>※追加されているカテゴリー名を書いた場合も</p>
-                        <p>　カテゴリー名を選択した扱いになります。</p>
-                    </div>    
                     <h4>シリーズ</h4> 
                     <input type=text name="series_input_name" placeholder="シリーズ名">
                     <select name="series_select_name">
@@ -44,9 +39,10 @@
                         @endforeach
                     </select>
                     <div class='text-red-600'>
-                        <p>※最初は必ずシリーズ名を選択する必要があります。</p>
-                        <p>※追加されているシリーズ名を書いた場合も</p>
-                        <p>　シリーズ名を選択した扱いになります。</p>
+                    <h4>・カテゴリーとシリーズについて</h4>
+                        <p>※選択欄にデータが無い場合はデータをを記入する必要があります。</p>
+                        <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
+                        <p>　選択欄のデータを選択した扱いと同じになります。</p>
                     </div> 
                 </div>
                 <div>

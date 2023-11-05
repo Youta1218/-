@@ -20,11 +20,11 @@ class BookshelfController extends Controller
             switch($select) {
                 case 1:
                     $sort='created_at';
-                    $order='ASC';
+                    $order='DESC';
                     break;
                 case 2:
                     $sort='created_at';
-                    $order='DESC';
+                    $order='ASC';
                     break;
                 case 3:
                     $sort='title';
@@ -37,7 +37,7 @@ class BookshelfController extends Controller
             } 
         } else {
             $sort='created_at';
-            $order='ASC';
+            $order='DESC';
         }
         $books=$bookshelf->books()->where('user_id', Auth::id())->orderBy($sort, $order)->paginate(6);
         //$this->authorize('view', $books->first());
