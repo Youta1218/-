@@ -39,8 +39,8 @@
                         @endforeach
                     </select>
                     <div class='text-red-600'>
-                    <h4>・カテゴリーとシリーズについて</h4>
-                        <p>※選択欄にデータが無い場合はデータをを記入する必要があります。</p>
+                        <h4>・カテゴリーとシリーズについて</h4>
+                        <p>※選択欄にデータが無い場合はデータを追加する必要があります。</p>
                         <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
                         <p>　選択欄のデータを選択した扱いと同じになります。</p>
                     </div> 
@@ -60,16 +60,23 @@
                         <div class="front_cover_image">
                             <h4>本棚の写真</h4>
                             <input type="file" name="bookshelf_image_path">
-                            <div class='text-red-600'>
-                                <p>※最初は必ず本棚の写真を選択する必要があります。</p>
-                                ※追加された本棚を選択した場合は選択する必要はありません。
-                            </div>    
                         </div>
                         <div class="bookplace">    
                             <h4>本の場所</h4> 
                             <input type=text name="book[place]" placeholder="本の場所">
                             <p class="place__error" style="color:red">{{ $errors->first('book.place') }}</p>
                         </div>
+                        <div class='text-red-600'>
+                            <h4>・本棚</h4>
+                            <p>※選択欄にデータが無い場合はデータを追加する必要があります。</p>
+                            <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
+                            <p>　選択欄のデータを選択した扱いと同じになります。</p>
+                        </div> 
+                        <div class='text-red-600'>
+                            <h4>・本棚の写真</h4>
+                            <p>※最初は必ず本棚の写真を選択する必要があります。</p>
+                            ※追加された本棚を選択した場合は選択する必要はありません。
+                        </div>    
                     </div>    
                     <div class='my-12 flex justify-center items-center'>
                         <div class='px-12 py-4 ml-40'>

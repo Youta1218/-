@@ -21,7 +21,7 @@
                     <input type='file' name='front_cover_image_path' value="{{ $blog->front_cover_image_path }}">
                     <p class="image__error" style="color:red">{{ $errors->first('front_cover_image_path') }}</p>
                     <div class='text-red-600'>
-                        ※編集する際には表紙を選択する必要があります。
+                        ※編集する際は表紙を選択する必要があります。
                     </div>    
                     <h3>カテゴリー</h3>
                     <input type='text' name='category_input_name' value="{{ $blog->category->name }}">
@@ -30,9 +30,6 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
-                    <div class='text-red-600'>
-                        ※すでに追加されているカテゴリー名を書いた場合もカテゴリー名を選択した扱いになります。
-                    </div>   
                     <h3>シリーズ</h3>
                     <input type='text' name='series_input_name' value="{{ $blog->series->name }}">
                     <select name="series_select_name">
@@ -41,7 +38,10 @@
                         @endforeach
                     </select>
                     <div class='text-red-600'>
-                        ※すでに追加されているシリーズ名を書いた場合もシリーズ名を選択した扱いになります。
+                        <h4>・カテゴリーとシリーズについて</h4>
+                        <p>※選択欄にデータが無い場合はデータを追加する必要があります。</p>
+                        <p>※記入欄に選択欄に追加されているデータを書いた場合は</p>
+                        <p>　選択欄のデータを選択した扱いと同じになります。</p>
                     </div> 
                 </div>
                 <div>
