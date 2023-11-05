@@ -62,7 +62,7 @@
                         <input type='text' name='book[place]' value="{{ $book->place }}">
                         <p class="place__error" style="color:red">{{ $errors->first('place.author') }}</p>
                         <div class='text-red-600'>
-                            <h4>・本棚の写真</h4>
+                            <h4>■本棚の写真について</h4>
                             <p>※最初は必ず本棚の写真を選択する必要があります。</p>
                             ※追加された本棚を選択した場合は選択する必要はありません。
                         </div>   
